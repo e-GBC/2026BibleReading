@@ -251,6 +251,21 @@ body {
     font-size: 14px;
 }
 
+.btn-text-small {
+    background: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-text-small:active {
+    background: #d35400;
+}
+
 
 /* --- Right Panel: Reader --- */
 .main-content {
@@ -284,18 +299,14 @@ body {
     border: 1px solid #ddd;
     border-radius: 8px;
     width: 48px;
-    /* Adjusted to 48px as requested */
     height: 48px;
-    /* Adjusted to 48px as requested */
     cursor: pointer;
     font-size: 18px;
-    /* Balanced text size */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Ensure hit area is large */
 .btn-icon:active {
     background-color: #ddd;
 }
@@ -340,7 +351,6 @@ body {
 .btn-primary,
 .btn-secondary {
     padding: 15px 25px;
-    /* Larger buttons for mobile */
     border-radius: 12px;
     border: none;
     cursor: pointer;
@@ -411,54 +421,62 @@ body {
     #app:not(.force-desktop) .mobile-only {
         display: block;
     }
+}
+
+/* --- Mobile View Toggling Logic --- */
+/* Default: Desktop is handled by root styles */
+
+/* Mobile Breakpoint */
+@media (max-width: 768px) {
+
+    /* Base Mobile Layout */
+    #app {
+        flex-direction: column;
+        display: block;
+        /* Use block for natural flow */
+        height: auto;
+        min-height: 100vh;
+    }
 
     body,
     html {
-        height: auto !important;
         overflow: auto !important;
-    }
-
-    #app:not(.force-desktop) {
-        display: block !important;
+        /* Allow scroll */
         height: auto !important;
-        min-height: 100vh;
-        overflow: visible !important;
+        scroll-behavior: smooth;
     }
 
-    #app:not(.force-desktop) .sidebar,
-    #app:not(.force-desktop) .main-content {
+    /* VIEW: Dashboard Active (Default on load) */
+    body.view-dashboard .sidebar {
+        display: flex !important;
+        /* Show Dashboard */
         width: 100% !important;
         height: auto !important;
-        overflow: visible !important;
+        min-height: 100vh;
     }
-}
 
-/* Mobile Response & Forced Mobile View */
-#app.force-mobile {
-    display: block !important;
-    height: auto !important;
-    min-height: 100vh;
-    overflow: visible !important;
-}
+    body.view-dashboard .main-content {
+        display: none !important;
+        /* Hide Reader */
+    }
 
-#app.force-mobile .sidebar,
-#app.force-mobile .main-content {
-    width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-}
+    /* VIEW: Reader Active */
+    body.view-reader .sidebar {
+        display: none !important;
+        /* Hide Dashboard */
+    }
 
-.btn-text-small {
-    background: #e67e22;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    font-weight: bold;
-}
+    body.view-reader .main-content {
+        display: flex !important;
+        /* Show Reader */
+        width: 100% !important;
+        height: auto !important;
+        min-height: 100vh;
+    }
 
-.btn-text-small:active {
-    background: #d35400;
+    /* Reset Styles for Mobile Flow */
+    .sidebar,
+    .main-content {
+        border: none !important;
+    }
 }

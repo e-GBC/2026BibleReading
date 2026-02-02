@@ -10,7 +10,7 @@ const appState = {
 
     // UI State
     fontSizeIndex: 2, // Default 14pt (Index 2 in [10, 12, 14, 16, 17, 18])
-    viewMode: 'desktop' // 'desktop' or 'mobile'
+    activeView: 'dashboard' // 'dashboard' or 'reader'
 };
 
 // --- CONSTANTS ---
@@ -48,54 +48,28 @@ async function initApp() {
         loadProgress();
         renderDashboard();
 
-        // Auto-detect mobile based on width if no manual override?
-        if (window.innerWidth <= 768) {
-            setViewMode('mobile');
-        }
+        // Initial View State
+        switchView('dashboard');
     } catch (error) {
         console.error("Initialization Failed:", error);
         alert("資料載入失敗，請檢查網路或檔案。");
     }
 }
 
-// --- VIEW MODE SCROLL HELPERS ---
-function scrollToReader() {
-    if (appState.viewMode === 'mobile' || window.innerWidth <= 768) {
-        const readerHeader = document.querySelector('.reader-header');
-        if (readerHeader) {
-            readerHeader.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-}
+// --- VIEW MANAGER ---
+// Replaces old scrolling logic with clean View Switching for Mobile
+window.switchView = (viewName) => {
+    appState.activeView = viewName;
+    document.body.classList.remove('view-dashboard', 'view-reader');
+    document.body.classList.add(`view-${viewName}`);
 
-function scrollToTop() {
-    if (appState.viewMode === 'mobile' || window.innerWidth <= 768) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-}
-
-window.setViewMode = (mode) => {
-    appState.viewMode = mode;
-    const appElem = document.getElementById('app');
-    const btnDesktop = document.getElementById('btn-desktop-view');
-    const btnMobile = document.getElementById('btn-mobile-view');
-
-    if (mode === 'mobile') {
-        appElem.classList.add('force-mobile');
-        appElem.classList.remove('force-desktop');
-        document.body.classList.add('scrollable');
-        btnMobile.classList.add('active');
-        btnDesktop.classList.remove('active');
-    } else {
-        appElem.classList.remove('force-mobile');
-        appElem.classList.add('force-desktop');
-        document.body.classList.remove('scrollable');
-        btnDesktop.classList.add('active');
-        btnMobile.classList.remove('active');
-    }
-
-    console.log(`View mode set to: ${mode}`);
+    // Always scroll to top when switching
+    window.scrollTo(0, 0);
 };
+
+// Legacy stub to prevent errors if html calls it
+window.setViewMode = () => { };
+
 
 // --- DATA LOADING ---
 async function loadData() {
@@ -242,6 +216,7 @@ function renderDashboard() {
         html += `<div style="margin-top: 20px;"><button class="btn-primary" onclick="loadScripture('${firstItem.book}', ${firstItem.chapter})">📖 開始閱讀</button></div>`;
     }
     contentDiv.innerHTML = html;
+
     renderCatchUp();
     updateStats();
 }
@@ -265,10 +240,8 @@ window.loadScripture = (bookName, chapter) => {
     document.querySelector('.chapter-title').textContent = `${bookName} 第 ${chapter} 章`;
     renderReaderNav(bookName, chapter);
 
-    // Auto Scroll Logic
-    const readerScrollArea = document.querySelector('.reader-scroll-area');
-    readerScrollArea.scrollTop = 0;
-    scrollToReader();
+    // Switch View
+    switchView('reader');
 };
 
 function renderReaderNav(currentBook, currentChapter) {
@@ -280,6 +253,9 @@ function renderReaderNav(currentBook, currentChapter) {
 
     const currentIndex = plan.items.findIndex(i => i.book === currentBook && i.chapter === currentChapter);
     let html = ``;
+
+    // Return to Dashboard Button Logic (for Header) is static in HTML, calls switchView('dashboard')
+
     if (currentIndex > 0) {
         const prev = plan.items[currentIndex - 1];
         html += `<button class="btn-secondary" onclick="loadScripture('${prev.book}', ${prev.chapter})">◀ 上一章</button>`;
@@ -298,9 +274,8 @@ window.finishAndNext = (cBook, cChap, nBook, nChap) => {
     const abbr = BOOK_MAP[cBook];
     appState.chapterProgress[`${abbr}_${cChap}`] = true;
     saveProgress();
-    loadScripture(nBook, nChap);
+    loadScripture(nBook, nChap); // This will keep us in Reader View and scroll top
     renderDashboard();
-    // loadScripture already handles scroll
 };
 
 window.finishAndHome = (cBook, cChap) => {
@@ -308,8 +283,9 @@ window.finishAndHome = (cBook, cChap) => {
     appState.chapterProgress[`${abbr}_${cChap}`] = true;
     saveProgress();
     renderDashboard();
-    scrollToTop();
+
     alert("今日進度已完成！");
+    switchView('dashboard');
 };
 
 // --- STATS & UTILS ---
@@ -377,7 +353,7 @@ window.goToDate = (dateStr) => {
     appState.currentDate = new Date(dateStr);
     checkReturnButton();
     renderDashboard();
-    scrollToTop();
+    // switchView is not needed as we assume we are already in dashboard or want to stay there
 };
 
 window.toggleFontSize = () => {
@@ -402,9 +378,8 @@ window.exportData = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     } catch (e) {
-        console.error("Download failed, showing text", e);
-        // Fallback for some mobile browsers
-        prompt("請複製以下代碼並手動儲存：", data);
+        console.error("Download failed", e);
+        prompt("手機板匯出請全選並複製以下代碼，並存在記事本中：", data);
     }
 };
 
