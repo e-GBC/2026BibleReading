@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>懷恩堂編年式讀經</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="../data/bible.js"></script>
+    <script src="../data/bible_en.js"></script>
+    <script src="../data/reading_plan.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js" defer></script>
 </head>
 
 <body>
@@ -22,7 +27,11 @@
         <!-- Left Panel: Progress & Dashboard -->
         <aside class="sidebar">
             <header class="app-header">
-                <h1>每日讀經</h1>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                    <h1 data-i18n="appTitle" style="margin: 0;">每日讀經</h1>
+                    <button id="lang-toggle-dashboard" class="btn-text" onclick="toggleLanguage()"
+                        style="font-size: 0.9rem;">English</button>
+                </div>
 
                 <!-- Date Navigation -->
                 <div class="date-controls">
@@ -32,13 +41,14 @@
                 </div>
 
                 <div style="margin-top: 5px;">
-                    <button id="btn-return-today" class="btn-text hidden" onclick="goToToday()">↺ 返回今日</button>
+                    <button id="btn-return-today" class="btn-text hidden" onclick="goToToday()" data-i18n="navBack">↺
+                        返回今日</button>
                 </div>
 
                 <!-- Month Navigation -->
                 <div class="month-controls">
-                    <button class="btn-text" onclick="changeMonth(-1)">◀ 上個月</button>
-                    <button class="btn-text" onclick="changeMonth(1)">下個月 ▶</button>
+                    <button class="btn-text" onclick="changeMonth(-1)" data-i18n="prevMonth">◀ 上個月</button>
+                    <button class="btn-text" onclick="changeMonth(1)" data-i18n="nextMonth">下個月 ▶</button>
                 </div>
             </header>
 
@@ -69,21 +79,25 @@
 
                 <!-- Annual Progress -->
                 <div class="annual-progress">
-                    <h3>年度進度</h3>
+                    <h3 data-i18n="yearlyProgress">年度進度</h3>
                     <div class="progress-bar-container">
                         <div class="progress-bar" style="width: 0%;"></div>
                     </div>
-                    <p class="annual-text">載入中...</p>
+                    <p class="annual-text"><span data-i18n="totalProgress">累積完成</span> ...</p>
                 </div>
             </div>
 
             <footer class="app-footer">
                 <details>
-                    <summary>資料管理 (匯出/匯入)</summary>
-                    <div class="data-controls">
-                        <button class="btn-text" onclick="exportData()">匯出進度代碼</button>
-                        <button class="btn-text" onclick="importData()">匯入進度代碼</button>
-                        <p style="font-size: 12px; color: #999; margin-top: 5px;">* 手機版請使用瀏覽器才能儲存進度</p>
+                    <summary data-i18n="appTitle">資料管理</summary>
+                    <!-- Simplified title for now, logic will handle text -->
+                    <div class="data-controls" style="flex-direction: column; align-items: center;">
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button class="btn-text" onclick="exportData()" data-i18n="exportBtn">匯出進度代碼</button>
+                            <button class="btn-text" onclick="importData()" data-i18n="importBtn">匯入進度代碼</button>
+                        </div>
+                        <p style="font-size: 12px; color: #999; margin-top: 5px;" data-i18n="mobileNote">*
+                            手機版請使用瀏覽器才能儲存進度</p>
                     </div>
                 </details>
             </footer>
@@ -92,10 +106,15 @@
         <!-- Right Panel: Scripture Reader -->
         <main class="main-content">
             <header class="reader-header">
-                <button class="btn-text mobile-only" onclick="scrollToTop()">回進度頁</button>
+                <button class="btn-text mobile-only" onclick="switchView('dashboard')">←</button>
                 <div class="chapter-title">章節標題</div>
-                <button class="btn-icon" onclick="toggleFontSize()">Aa</button> <!-- Font size toggle -->
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn-text" onclick="toggleLanguage()" id="lang-toggle-reader"
+                        style="font-size: 0.9rem;">English</button>
+                    <button class="btn-icon" onclick="toggleFontSize()">Aa</button>
+                </div>
             </header>
+
 
             <div class="reader-scroll-area">
                 <div class="reader-content">
@@ -111,8 +130,7 @@
 
     </div>
 
-    <script src="../data/bible.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Scripts moved to head -->
 </body>
 
 </html>

@@ -81,7 +81,8 @@ body {
 }
 
 .date-display {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
+    /* Increased size */
     font-weight: bold;
     min-width: 150px;
 }
@@ -92,6 +93,12 @@ body {
     justify-content: center;
     gap: 20px;
 }
+
+.month-controls .btn-text {
+    font-size: 16pt;
+    /* Increased size */
+}
+
 
 .btn-icon-small {
     background: none;
@@ -240,6 +247,11 @@ body {
     justify-content: center;
     gap: 10px;
     margin-top: 5px;
+}
+
+/* Specific increase for Book Name */
+.book-group h3 {
+    font-size: 26px !important;
 }
 
 .btn-text {
@@ -485,3 +497,5 @@ body {
         border: none !important;
     }
 }
+.lang-en .titles-container h2 { font-size: 22px !important; }
+#lang-toggle-dashboard, #lang-toggle-reader { cursor: pointer; min-width: 60px; }
