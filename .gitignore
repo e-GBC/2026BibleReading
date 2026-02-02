@@ -1,0 +1,13 @@
+# Temporary files
+~$*
+*.tmp
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environments
+.env
+.venv/
+node_modules/
+.gemini/

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>懷恩堂編年式讀經</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- App Container (Split Screen) -->
+    <div id="app">
+
+        <!-- Left Panel: Progress & Dashboard -->
+        <aside class="sidebar">
+            <header class="app-header">
+                <h1>每日讀經</h1>
+
+                <!-- Date Navigation -->
+                <div class="date-controls">
+                    <button class="btn-icon-small" onclick="changeDay(-1)">◀</button>
+                    <span class="date-display">載入中...</span>
+                    <button class="btn-icon-small" onclick="changeDay(1)">▶</button>
+                </div>
+
+                <div style="margin-top: 5px;">
+                    <button id="btn-return-today" class="btn-text hidden" onclick="goToToday()">↺ 返回今日</button>
+                </div>
+
+                <!-- Month Navigation -->
+                <div class="month-controls">
+                    <button class="btn-text" onclick="changeMonth(-1)">◀ 上個月</button>
+                    <button class="btn-text" onclick="changeMonth(1)">下個月 ▶</button>
+                </div>
+            </header>
+
+            <!-- Catch Up Banner -->
+            <div id="catch-up-container" class="hidden"></div>
+
+            <div class="dashboard-content">
+                <!-- Daily Card -->
+                <div class="daily-card" id="today-card">
+                    <div class="card-content">
+                        <!-- Injected by JS: Title first, then Chapters -->
+                        <h2>載入中...</h2>
+                    </div>
+                </div>
+
+                <!-- Monthly Progress -->
+                <div class="monthly-progress">
+                    <h3>本月進度</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="monthly-bar" style="width: 0%;"></div>
+                    </div>
+                    <p class="monthly-text">載入中...</p>
+                </div>
+
+                <!-- Annual Progress -->
+                <div class="annual-progress">
+                    <h3>年度進度</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <p class="annual-text">載入中...</p>
+                </div>
+            </div>
+
+            <footer class="app-footer">
+                <details>
+                    <summary>資料管理 (匯出/匯入)</summary>
+                    <div class="data-controls">
+                        <button class="btn-text" onclick="exportData()">匯出進度代碼</button>
+                        <button class="btn-text" onclick="importData()">匯入進度代碼</button>
+                    </div>
+                </details>
+            </footer>
+        </aside>
+
+        <!-- Right Panel: Scripture Reader -->
+        <main class="main-content">
+            <header class="reader-header">
+                <div class="chapter-title">章節標題</div>
+                <button class="btn-icon" onclick="toggleFontSize()">Aa</button> <!-- Font size toggle -->
+            </header>
+
+            <div class="reader-scroll-area">
+                <div class="reader-content">
+                    <!-- Text injected by JS -->
+                    <p class="placeholder-text">請選擇左側日期的經文開始閱讀</p>
+                </div>
+
+                <div class="reader-nav hidden">
+                    <!-- Buttons injected by JS -->
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="../data/bible.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
