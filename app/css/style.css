@@ -474,6 +474,11 @@ body {
         min-height: 100vh;
     }
 
+    body.view-reader .reader-scroll-area {
+        padding: 20px 15px !important;
+        /* Reduced padding for mobile */
+    }
+
     /* Reset Styles for Mobile Flow */
     .sidebar,
     .main-content {
