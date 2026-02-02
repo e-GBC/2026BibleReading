@@ -27,11 +27,9 @@
         <!-- Left Panel: Progress & Dashboard -->
         <aside class="sidebar">
             <header class="app-header">
-                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <h1 data-i18n="appTitle" style="margin: 0;">每日讀經</h1>
-                    <button id="lang-toggle-dashboard" class="btn-text" onclick="toggleLanguage()"
-                        style="font-size: 0.9rem;">English</button>
-                </div>
+                <h1 data-i18n="appTitle">每日讀經</h1>
+                <button id="lang-toggle-dashboard" class="btn-text" onclick="toggleLanguage()"
+                    style="font-size: 0.9rem; position: absolute; right: 15px; top: 15px;">English</button>
 
                 <!-- Date Navigation -->
                 <div class="date-controls">
@@ -68,8 +66,8 @@
                 <div class="monthly-progress">
                     <div class="progress-header"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                        <h3>本月進度</h3>
-                        <button class="btn-text-small" onclick="completeMonth()">本月完成</button>
+                        <h3 data-i18n="monthlyProgress">本月進度</h3>
+                        <button class="btn-text-small" onclick="completeMonth()" data-i18n="monthComplete">本月完成</button>
                     </div>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="monthly-bar" style="width: 0%;"></div>
@@ -107,7 +105,7 @@
         <main class="main-content">
             <header class="reader-header">
                 <button class="btn-text mobile-only" onclick="switchView('dashboard')">←</button>
-                <div class="chapter-title">章節標題</div>
+                <div class="chapter-title" data-i18n="readerTitleDefault">章節標題</div>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <button class="btn-text" onclick="toggleLanguage()" id="lang-toggle-reader"
                         style="font-size: 0.9rem;">English</button>
@@ -119,7 +117,7 @@
             <div class="reader-scroll-area">
                 <div class="reader-content">
                     <!-- Text injected by JS -->
-                    <p class="placeholder-text">請選擇本日經文開始閱讀</p>
+                    <p class="placeholder-text" data-i18n="readerPlaceholder">請選擇本日經文開始閱讀</p>
                 </div>
 
                 <div class="reader-nav hidden">

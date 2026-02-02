@@ -499,3 +499,6 @@ body {
 }
 .lang-en .titles-container h2 { font-size: 22px !important; }
 #lang-toggle-dashboard, #lang-toggle-reader { cursor: pointer; min-width: 60px; }
+
+.reader-header .chapter-title { flex: 1; text-align: center; } 
+.lang-en .titles-container h2 { display: none; }

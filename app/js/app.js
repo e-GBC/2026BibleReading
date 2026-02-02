@@ -2,7 +2,11 @@ console.log("App initialized.");
 
 // State Management
 const appState = {
-    currentDate: new Date(),
+    currentDate: (() => {
+        const d = new Date();
+        const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        return new Date(utc + (3600000 * 8));
+    })(),
     readingPlan: [],
     parsedBibleZh: {},
     parsedBibleEn: {},
@@ -10,7 +14,9 @@ const appState = {
     chapterProgress: {},
     currentLang: localStorage.getItem('bible_reading_lang') || 'zh', // 'zh' or 'en'
     fontSizeIndex: 2,
-    activeView: 'dashboard'
+    activeView: 'dashboard',
+    currentBook: null, // Added for reload context
+    currentChapter: null // Added for reload context
 };
 
 // --- CONSTANTS ---
@@ -76,13 +82,14 @@ window.toggleLanguage = () => {
     // If in reader view, force reload to update content language
     if (appState.activeView === 'reader') {
         const titleEl = document.querySelector('.chapter-title');
-        // We can't easily access current book info unless we store it.
-        // But renderDashboard updates everything, user can just re-click or use back button.
-        // To be user friendly, we could store current reading state in appState.
-        // For now, let's just stay in Reader but renderDashboard changes the background list.
-        // The reader content won't update until they navigate.
-        // Ideally:
-        // if (appState.currentBook && appState.currentChapter) loadScripture(appState.currentBook, appState.currentChapter);
+        // Reload scripture if context exists
+        if (appState.currentBook && appState.currentChapter) {
+            loadScripture(appState.currentBook, appState.currentChapter);
+        } else {
+            titleEl.textContent = translations[appState.currentLang].readerTitleDefault;
+            const ph = document.querySelector('.placeholder-text');
+            if (ph) ph.innerText = translations[appState.currentLang].readerPlaceholder;
+        }
     }
 };
 
@@ -143,7 +150,7 @@ async function loadData() {
 
 function parseBibleArray(lines) {
     const bible = {};
-    const regex = /^([^\d]+)(\d+):(\d+)\s+(.*)$/;
+    const regex = /^(.+?)(\d+):(\d+)\s+(.*)$/;
 
     lines.forEach(line => {
         const match = line.match(regex);
@@ -173,7 +180,18 @@ function saveProgress() {
 
 // --- CORE LOGIC ---
 function getDateKey(date) {
-    return date.toISOString().split('T')[0];
+    // Force GMT+8 Date String (YYYY-MM-DD)
+    // Create new Date object adjusted to GMT+8
+    const offset = 8 * 60; // Minutes
+    const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+    const twDate = new Date(utc + (3600000 * 8));
+    return twDate.toISOString().split('T')[0];
+}
+
+function getTodayGMT8() {
+    const d = new Date();
+    const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    return new Date(utc + (3600000 * 8));
 }
 
 function getPlanForDate(dateStr) {
@@ -217,7 +235,7 @@ window.changeMonth = (offset) => {
 };
 
 window.goToToday = () => {
-    appState.currentDate = new Date();
+    appState.currentDate = getTodayGMT8();
     checkReturnButton();
     renderDashboard();
 };
@@ -230,7 +248,7 @@ window.goToDate = (dateStr) => {
 };
 
 function checkReturnButton() {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getDateKey(getTodayGMT8());
     const current = getDateKey(appState.currentDate);
     const btn = document.getElementById('btn-return-today');
     if (btn) {
@@ -319,19 +337,12 @@ function renderCatchUp() {
 
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         const dateStr = getDateKey(d);
-        // We reuse logic but ensure we don't depend on UI state
-        // Re-implement minimal check:
-        // We need readingPlan data for that date.
-        // Optimization: iterate plan instead of dates if plan is efficient. 
-        // But iterating dates ensures we check every day.
-
         // Find plan entries for date
         const entries = appState.readingPlan.filter(p => p.date === dateStr);
         if (!entries.length) continue;
 
         let allDone = true;
         entries.forEach(e => {
-            // simplified check
             if (e.chapters) e.chapters.forEach(ch => {
                 const key = `${BOOK_MAP[e.book]}_${ch}`;
                 if (!appState.chapterProgress[key]) allDone = false;
@@ -476,34 +487,70 @@ function updateStats() {
     });
 
     const monthPercent = monthTotal > 0 ? Math.round((monthDone / monthTotal) * 100) : 0;
-    // We assume there is a #monthly-bar or similar if user wants month stats displayed.
-    // The previous code had it, so we preserve if elements exist.
-    // If UI for month stats is not in HTML (it was in getPlanForDate titles maybe?), 
-    // actually previous code had it in `updateStats`.
-    // Checking index.html, there is "Month Progress" section? 
-    // The simplified HTML I saw had "Annual Progress". 
-    // I'll leave the logic here just in case.
+    const monthElem = document.querySelector('#monthly-bar');
+    if (monthElem) monthElem.style.width = `${monthPercent}%`;
+
+    const monthText = document.querySelector('.monthly-text');
+    if (monthText) {
+        // use t.months array
+        const monthName = t.months[month];
+        const finishText = t.monthFinish || "Month Completion";
+        monthText.textContent = `${monthName}: ${finishText} ${monthDone} / ${monthTotal} ${t.chapterUnit}`;
+    }
 }
 
-// Stub for export/import
+// File Export/Import Logic
 window.exportData = () => {
-    const code = btoa(JSON.stringify(appState.chapterProgress));
-    navigator.clipboard.writeText(code).then(() => alert(translations[appState.currentLang].copySuccess));
+    const dataStr = JSON.stringify(appState.chapterProgress);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+    // Generate Filename: GBC2026BibleReading_progress_YYMMDD
+    const d = new Date();
+    const yy = d.getFullYear().toString().slice(-2);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const fileName = `GBC2026BibleReading_progress_${yy}${mm}${dd}.json`;
+
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 };
 
 window.importData = () => {
-    const t = translations[appState.currentLang];
-    const code = prompt(t.importPrompt);
-    if (!code) return;
-    try {
-        const data = JSON.parse(atob(code));
-        appState.chapterProgress = data;
-        saveProgress();
-        alert(t.importSuccess);
-        location.reload();
-    } catch (e) {
-        alert(t.importError);
-    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+
+    input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = event => {
+            try {
+                const data = JSON.parse(event.target.result);
+                // Simple validation
+                if (typeof data === 'object') {
+                    appState.chapterProgress = data;
+                    saveProgress();
+                    alert(translations[appState.currentLang].importSuccess);
+                    location.reload();
+                } else {
+                    throw new Error('Invalid JSON');
+                }
+            } catch (err) {
+                alert(translations[appState.currentLang].importError);
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    input.click();
 };
 
 window.toggleFontSize = () => {
