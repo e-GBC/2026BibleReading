@@ -10,6 +10,12 @@
 
 <body>
 
+    <!-- View Mode Selector (Hidden for production) -->
+    <div class="view-mode-selector hidden">
+        <button id="btn-desktop-view" class="active" onclick="setViewMode('desktop')">💻 電腦版</button>
+        <button id="btn-mobile-view" onclick="setViewMode('mobile')">📱 手機版</button>
+    </div>
+
     <!-- App Container (Split Screen) -->
     <div id="app">
 
@@ -50,7 +56,11 @@
 
                 <!-- Monthly Progress -->
                 <div class="monthly-progress">
-                    <h3>本月進度</h3>
+                    <div class="progress-header"
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <h3>本月進度</h3>
+                        <button class="btn-text-small" onclick="completeMonth()">本月完成</button>
+                    </div>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="monthly-bar" style="width: 0%;"></div>
                     </div>
@@ -81,6 +91,7 @@
         <!-- Right Panel: Scripture Reader -->
         <main class="main-content">
             <header class="reader-header">
+                <button class="btn-text mobile-only" onclick="scrollToTop()">回進度頁</button>
                 <div class="chapter-title">章節標題</div>
                 <button class="btn-icon" onclick="toggleFontSize()">Aa</button> <!-- Font size toggle -->
             </header>
@@ -88,7 +99,7 @@
             <div class="reader-scroll-area">
                 <div class="reader-content">
                     <!-- Text injected by JS -->
-                    <p class="placeholder-text">請選擇左側日期的經文開始閱讀</p>
+                    <p class="placeholder-text">請選擇本日經文開始閱讀</p>
                 </div>
 
                 <div class="reader-nav hidden">

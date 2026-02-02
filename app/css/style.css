@@ -261,22 +261,43 @@ body {
     background-color: #fff;
 }
 
+/* --- Reader Styling --- */
 .reader-header {
     padding: var(--spacing-md);
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
-    /* To push title center if needed */
     align-items: center;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .chapter-title {
-    font-size: var(--font-large);
+    font-size: 1.5rem;
     font-weight: bold;
-    margin: 0 auto;
-    /* Center */
+}
+
+.btn-icon {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 48px;
+    /* Adjusted to 48px as requested */
+    height: 48px;
+    /* Adjusted to 48px as requested */
+    cursor: pointer;
+    font-size: 18px;
+    /* Balanced text size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure hit area is large */
+.btn-icon:active {
+    background-color: #ddd;
 }
 
 .reader-scroll-area {
@@ -287,6 +308,10 @@ body {
     max-width: 900px;
     margin: 0 auto;
     width: 100%;
+}
+
+.reader-content {
+    padding: var(--spacing-lg);
 }
 
 .reader-content p {
@@ -314,11 +339,12 @@ body {
 
 .btn-primary,
 .btn-secondary {
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 15px 25px;
+    /* Larger buttons for mobile */
+    border-radius: 12px;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .btn-primary {
@@ -329,6 +355,30 @@ body {
 .btn-secondary {
     background-color: #95a5a6;
     color: white;
+}
+
+/* --- View Mode Toggle --- */
+.view-mode-selector {
+    padding: 10px;
+    background: #34495e;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+
+.view-mode-selector button {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+}
+
+.view-mode-selector button.active {
+    background: white;
+    color: #34495e;
 }
 
 /* Catch-up Banner */
@@ -349,28 +399,66 @@ body {
     display: none !important;
 }
 
-/* Mobile Response: Stack on small screens */
+.mobile-only {
+    display: none;
+}
+
+#app.force-mobile .mobile-only {
+    display: block;
+}
+
 @media (max-width: 768px) {
-    #app {
-        flex-direction: column;
-        height: auto;
-        overflow: auto;
-    }
-
-    .sidebar {
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .main-content {
-        height: auto;
+    #app:not(.force-desktop) .mobile-only {
+        display: block;
     }
 
     body,
     html {
-        height: auto;
-        overflow: auto;
+        height: auto !important;
+        overflow: auto !important;
     }
+
+    #app:not(.force-desktop) {
+        display: block !important;
+        height: auto !important;
+        min-height: 100vh;
+        overflow: visible !important;
+    }
+
+    #app:not(.force-desktop) .sidebar,
+    #app:not(.force-desktop) .main-content {
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+}
+
+/* Mobile Response & Forced Mobile View */
+#app.force-mobile {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh;
+    overflow: visible !important;
+}
+
+#app.force-mobile .sidebar,
+#app.force-mobile .main-content {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.btn-text-small {
+    background: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-text-small:active {
+    background: #d35400;
 }
