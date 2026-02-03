@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2196F3">
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 
     <script src="../data/bible.js"></script>
     <script src="../data/bible_en.js"></script>
-    <!-- reading_plan.json is loaded via fetch in app.js -->
     <script src="js/i18n.js"></script>
     <script src="js/app.js" defer></script>
     <script src="js/pwa-handler.js" defer></script>
@@ -29,16 +29,7 @@
 </head>
 
 <body>
-
-    <!-- View Mode Selector (Hidden for production) -->
-    <div class="view-mode-selector hidden">
-        <button id="btn-desktop-view" class="active" onclick="setViewMode('desktop')">💻 電腦版</button>
-        <button id="btn-mobile-view" onclick="setViewMode('mobile')">📱 手機版</button>
-    </div>
-
-    <!-- App Container (Split Screen) -->
     <div id="app">
-
         <!-- Left Panel: Progress & Dashboard -->
         <aside class="sidebar">
             <header class="app-header">
@@ -46,7 +37,6 @@
                 <button id="lang-toggle-dashboard" class="btn-text" onclick="toggleLanguage()"
                     style="font-size: 0.9rem; position: absolute; right: 15px; top: 15px;">English</button>
 
-                <!-- Date Navigation -->
                 <div class="date-controls">
                     <button class="btn-icon-small" onclick="changeDay(-1)">◀</button>
                     <span class="date-display">載入中...</span>
@@ -58,26 +48,21 @@
                         返回今日</button>
                 </div>
 
-                <!-- Month Navigation -->
                 <div class="month-controls">
                     <button class="btn-text" onclick="changeMonth(-1)" data-i18n="prevMonth">◀ 上個月</button>
                     <button class="btn-text" onclick="changeMonth(1)" data-i18n="nextMonth">下個月 ▶</button>
                 </div>
             </header>
 
-            <!-- Catch Up Banner -->
             <div id="catch-up-container" class="hidden"></div>
 
             <div class="dashboard-content">
-                <!-- Daily Card -->
                 <div class="daily-card" id="today-card">
                     <div class="card-content">
-                        <!-- Injected by JS: Title first, then Chapters -->
                         <h2>載入中...</h2>
                     </div>
                 </div>
 
-                <!-- Monthly Progress -->
                 <div class="monthly-progress">
                     <div class="progress-header"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
@@ -93,7 +78,6 @@
                     </div>
                 </div>
 
-                <!-- Annual Progress -->
                 <div class="annual-progress">
                     <h3 data-i18n="yearlyProgress">年度進度</h3>
                     <div class="progress-bar-container">
@@ -104,25 +88,19 @@
             </div>
 
             <footer class="app-footer">
-                <div style="margin-bottom: 20px; text-align: center;">
-                    <a href="guide.html" class="btn-text" data-i18n="guideBtn"
-                        style="font-weight: bold; font-size: 1.1rem; text-decoration: none; color: var(--primary-color); display: block; padding: 10px; border: 2px dashed var(--primary-color); border-radius: 10px; margin: 0 15px;">📖
-                        使用說明書</a>
-                </div>
                 <details>
-                    <summary data-i18n="appTitle">資料管理</summary>
+                    <summary data-i18n="toolTitle">工具</summary>
                     <div class="data-controls" style="flex-direction: column; align-items: center; padding: 10px;">
                         <div
-                            style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                            style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
                             <button class="btn-text" onclick="exportData()" data-i18n="exportBtn">匯出備份</button>
                             <button class="btn-text" onclick="importData()" data-i18n="importBtn">匯入備份</button>
                             <a href="javascript:void(0)" onclick="createShortcut()" class="btn-text-small"
-                                data-i18n="shortcutBtn"
-                                style="text-decoration: underline; color: var(--primary-color); font-size: 0.8rem; margin-top: 2px;">匯出捷徑於桌面</a>
+                                data-i18n="shortcutBtn">匯出捷徑於桌面</a>
+                            <a href="guide.html" class="btn-text" data-i18n="guideBtn">使用說明書</a>
                         </div>
-                        <p style="font-size: 12px; color: #999; margin-top: 5px;" data-i18n="mobileNote">*
-                            手機版請使用瀏覽器才能儲存進度</p>
                     </div>
+                    <p style="font-size: 12px; color: #999; margin-top: 5px;" data-i18n="appNote">2026 GBC Bible</p>
                 </details>
             </footer>
         </aside>
@@ -139,21 +117,14 @@
                 </div>
             </header>
 
-
             <div class="reader-scroll-area">
                 <div class="reader-content">
-                    <!-- Text injected by JS -->
                     <p class="placeholder-text" data-i18n="readerPlaceholder">請選擇本日經文開始閱讀</p>
                 </div>
-
-                <div class="reader-nav hidden">
-                    <!-- Buttons injected by JS -->
-                </div>
+                <div class="reader-nav hidden"></div>
             </div>
         </main>
-
     </div>
-
 </body>
 
 </html>

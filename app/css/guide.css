@@ -133,11 +133,12 @@ body {
 }
 
 .tut-image {
-    width: 100%;
-    max-width: 100%;
+    width: 66%;
+    max-width: 66%;
     border-radius: 12px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     border: 1px solid #eee;
+    display: block;
 }
 
 .tip-box {

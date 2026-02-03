@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <header class="guide-header">
         <a href="index.html" class="back-link">
             <span lang="zh">返回</span>
@@ -22,16 +21,15 @@
     </header>
 
     <main class="guide-container">
-
         <div class="intro-section">
             <div lang="zh">
                 <h1>平安！親愛的弟兄姊妹</h1>
-                <p style="font-size: 20px;">這是一份詳細的操作指南，幫助您輕鬆地在手機或電腦上追蹤讀經進度。</p>
+                <p style="font-size: 20px;">這是一份操作指南，幫助您輕鬆地在手機或電腦上追蹤讀經進度。</p>
             </div>
             <div lang="en">
                 <h1>Peace be with you!</h1>
-                <p style="font-size: 20px;">This is a detailed guide to help you easily track your Bible reading
-                    progress on mobile or desktop.</p>
+                <p style="font-size: 20px;">This is a guide to help you easily track your Bible reading progress on
+                    mobile or desktop.</p>
             </div>
         </div>
 
@@ -50,24 +48,24 @@
                 <!-- PC Tab Content -->
                 <div id="content-tab01-PC" class="tab-content active">
                     <img src="ref/tut01_PC.png" class="tut-image">
-                    <p lang="zh">點擊網址列右側的「星形」圖示加入書籤，或點擊選單中的「儲存、分享」>「建立捷徑」。</p>
-                    <p lang="en">Click the "Star" icon to the right of the address bar to bookmark, or select "Save and
-                        Share" > "Create Shortcut" from the menu.</p>
+                    <p lang="zh">點擊網址列右側的「星形」圖示加入書籤，<br>或點擊選單中的「儲存、分享」>「建立捷徑」。</p>
+                    <p lang="en">Click the "Star" icon to the right of the address bar to bookmark, <br>or select "Save
+                        and Share" > "Create Shortcut" from the menu.</p>
                 </div>
 
                 <!-- iOS Tab Content -->
                 <div id="content-tab01-iOS" class="tab-content">
                     <img src="ref/tut01_iOS.png" class="tut-image">
-                    <p lang="zh">點擊下方導覽列的「分享」圖示（方塊往上箭頭），向上滑動找到「加入主畫面」(+)，點擊右上角「新增」。</p>
-                    <p lang="en">Tap the "Share" icon (square with upward arrow), scroll up to find "Add to Home Screen"
-                        (+), and tap "Add" in the top-right.</p>
+                    <p lang="zh">點擊下方導覽列的「分享」圖示（方塊往上箭頭），<br>向上滑動找到「加入主畫面」(+)，<br>點擊右上角「新增」。</p>
+                    <p lang="en">Tap the "Share" icon (square with upward arrow), <br>scroll up to find "Add to Home
+                        Screen" (+), <br>and tap "Add" in the top-right.</p>
                 </div>
 
                 <!-- Android Tab Content -->
                 <div id="content-tab01-Android" class="tab-content">
                     <img src="ref/tut01_Android.png" class="tut-image">
-                    <p lang="zh">點擊右上角「三個點」選單，選擇「安裝應用程式」或「加到主畫面」。</p>
-                    <p lang="en">Tap the "Three Dots" menu, select "Install app" or "Add to Home Screen".</p>
+                    <p lang="zh">點擊右上角「三個點」選單，<br>選擇「安裝應用程式」或「加到主畫面」。</p>
+                    <p lang="en">Tap the "Three Dots" menu, <br>select "Install app" or "Add to Home Screen".</p>
                 </div>
             </div>
         </section>
@@ -100,18 +98,18 @@
 
             <div class="content-block">
                 <div lang="zh">
-                    <p>本程式將您的進度儲存在瀏覽器的「快取」中。這就像在書本裡夾書籤，如果您更換了瀏覽器、使用「無痕模式」，或清理了手機空間，進度可能會重置。</p>
+                    <p>本程式將您的進度儲存在瀏覽器的「快取」中。<br>這就像在書本裡夾書籤，如果您更換了瀏覽器、使用「無痕模式」，或清理了手機空間，進度可能會重置。</p>
                     <div class="tip-box">
-                        <strong>溫馨提示：</strong> 請固定使用同一個瀏覽器，或使用手機將連結加入主畫面，不清理暫存即可保留進度！
+                        <strong>溫馨提示：</strong> 請固定使用同一個瀏覽器，或使用手機將連結加入主畫面。
                     </div>
                 </div>
                 <div lang="en">
-                    <p>This program stores your progress in your browser's "cache". It's like a bookmark in a book; if
-                        you switch browsers, use "incognito mode", or clear your phone space, your progress may be
+                    <p>This program stores your progress in your browser's "cache". <br>It's like a bookmark in a book;
+                        if you switch browsers, use "incognito mode", or clear your phone space, your progress may be
                         reset.</p>
                     <div class="tip-box">
-                        <strong>Warm Tip:</strong> Please stick to the same browser, or add the link to your home screen
-                        on your phone. Progress is preserved as long as you don't clear the cache!
+                        <strong>Tip:</strong> Please stick to the same browser, or add the link to your home screen on
+                        your phone.
                     </div>
                 </div>
             </div>
@@ -143,7 +141,6 @@
                 <p style="margin-top: 10px;">God Bless You!</p>
             </div>
         </footer>
-
     </main>
 
     <script>
@@ -153,19 +150,15 @@
             localStorage.setItem('bible_reading_lang', newLang);
         }
 
-        // Initialize language
         const savedLang = localStorage.getItem('bible_reading_lang');
         if (savedLang === 'en') {
             document.body.classList.add('lang-en');
         }
 
         function showTab(groupId, tabId) {
-            // Update buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.innerText.includes(tabId));
             });
-
-            // Update contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.toggle('active', content.id === `content-${groupId}-${tabId}`);
             });

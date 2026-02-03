@@ -38,7 +38,6 @@ function initPWALogic() {
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        console.log('PWA: beforeinstallprompt captured');
     });
 }
 
@@ -82,39 +81,39 @@ function showAndroidGuide() {
     `;
 
     const title = isEn ? "Add to Home Screen" : "加入主畫面教學";
-    const step1 = isEn ? "Tap the 'Three Dots' (⋮) in the top-right" : "點選右上角內容選單「...」圖示";
-    const step2 = isEn ? "Select 'Add to Home Screen' or 'Install App'" : "點選選單中的「加到主畫面」或「安裝應用程式」";
+    const step1 = isEn ? "Tap the 'Three Dots' (⋮) icon in the top-right" : "點選右上角內容選單「...」圖示";
+    const step2 = isEn ? "Select 'Add to Home Screen' from the menu" : "點選選單中的「加到主畫面」";
     const btnContent = isEn ? "Add to Home Screen" : "加到主畫面";
 
     overlay.innerHTML = `
         <div style="background: white; color: #333; width: 100%; max-width: 400px; border-radius: 20px; padding: 30px; position: relative; margin-top: 50px; animation: fadeIn 0.3s ease-out;">
             <button onclick="document.getElementById('pwa-android-guide').remove()" style="position: absolute; right: 15px; top: 15px; background: none; border: none; font-size: 24px;">×</button>
-            <h2 style="margin-top: 0; text-align: center;">${title}</h2>
+            <h2 style="margin-top: 0; text-align: center; font-size: 24px;">${title}</h2>
             
-            <div style="margin: 25px 0;">
-                <p style="font-size: 1.2rem; display: flex; align-items: center;">
-                    <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;">1</span>
-                    ${step1}
-                </p>
-                <div style="text-align: center; margin-top: 10px;">
-                    <div style="font-size: 30px; color: #666;">⋮</div>
+            <!-- Step 1 -->
+            <div style="margin: 25px 0; display: flex; align-items: flex-start;">
+                <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; min-width: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold; font-size: 18px;">1</span>
+                <div>
+                    <p style="font-size: 1.1rem; margin: 0;">${step1}</p>
+                    <div style="text-align: center; margin-top: 10px; font-size: 30px; color: #666; line-height: 1;">⋮</div>
                 </div>
             </div>
 
-            <div style="margin: 25px 0;">
-                <p style="font-size: 1.2rem; display: flex; align-items: center;">
-                    <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;">2</span>
-                    ${step2}
-                </p>
-                <div style="text-align: center; margin-top: 10px;">
-                    <div style="display: inline-flex; align-items: center; border: 1px solid #ddd; padding: 10px 20px; border-radius: 10px; background: #f9f9f9;">
-                         <svg width="24" height="24" viewBox="0 0 24 24" style="margin-right:10px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                        <span style="font-weight: bold;">${btnContent}</span>
+            <!-- Step 2 -->
+            <div style="margin: 25px 0; display: flex; align-items: flex-start;">
+                <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; min-width: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-weight: bold; font-size: 18px;">2</span>
+                <div>
+                    <p style="font-size: 1.1rem; margin: 0; min-height: 30px; display: flex; align-items: center;">${step2}</p>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <div style="display: inline-flex; align-items: center; border: 1px solid #ddd; padding: 10px 15px; border-radius: 10px; background: #f9f9f9;">
+                             <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right:10px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            <span style="font-weight: bold; font-size: 16px;">${btnContent}</span>
+                        </div>
                     </div>
                 </div>
             </div>
             
-             <p style="font-size: 0.9rem; color: #888; text-align: center; margin-top: 20px;">
+             <p style="font-size: 0.9rem; color: #888; text-align: center; margin-top: 20px; line-height: 1.4;">
                 ${isEn ? "Note: If you don't see the option, please ensure you are using Chrome browser." : "提示：若沒看到選項，請確認您使用的是 Chrome 瀏覽器。"}
              </p>
         </div>

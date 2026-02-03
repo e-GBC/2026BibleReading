@@ -2,11 +2,15 @@ const CACHE_NAME = 'bible-reading-v1';
 const ASSETS = [
     './',
     './index.html',
+    './guide.html',
     './css/style.css',
+    './css/guide.css',
     './js/app.js',
     './js/i18n.js',
     './js/pwa-handler.js',
-    './manifest.json'
+    './manifest.json',
+    './icons/icon-192x192.png',
+    './icons/icon-512x512.png'
 ];
 
 self.addEventListener('install', (event) => {

@@ -18,7 +18,7 @@ const translations = {
         navFinish: "讀完打卡",
         exportBtn: "匯出備份",
         importBtn: "匯入備份",
-        mobileNote: "* 手機版請使用瀏覽器才能儲存進度",
+        appNote: "2026 GBC Bible Reading",
         confirmReset: "確定要清除所有讀經紀錄嗎？此動作無法復原。",
         importPrompt: "請選擇備份檔案",
         importSuccess: "進度已更新！",
@@ -30,8 +30,11 @@ const translations = {
         langBtn: "English",
         readerPlaceholder: "請選擇本日經文開始閱讀",
         readerTitleDefault: "章節標題",
+        toolTitle: "工具設定",
         shortcutBtn: "匯出捷徑於桌面",
         guideBtn: "📖 使用說明書",
+        confirmClearMonth: "是否取消本月所有進度？",
+        monthCleared: "已刪除 %m 的所有進度",
         months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
     },
     en: {
@@ -53,7 +56,7 @@ const translations = {
         navFinish: "Finish & Mark",
         exportBtn: "Export Archive",
         importBtn: "Import Archive",
-        mobileNote: "* Please use browser to save progress on mobile",
+        appNote: "2026 GBC Bible Reading",
         confirmReset: "Are you sure you want to reset all progress? This cannot be undone.",
         importPrompt: "Select backup file",
         importSuccess: "Progress updated!",
@@ -65,8 +68,11 @@ const translations = {
         langBtn: "中文",
         readerPlaceholder: "Please select today's scripture to start reading",
         readerTitleDefault: "Chapter Title",
+        toolTitle: "Tools",
         shortcutBtn: "Export Desktop Shortcut",
         guideBtn: "📖 User Guide",
+        confirmClearMonth: "Clear all progress for this month?",
+        monthCleared: "Deleted all progress for %m",
         months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     }
 };
