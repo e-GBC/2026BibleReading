@@ -30,6 +30,7 @@ const translations = {
         langBtn: "English",
         readerPlaceholder: "請選擇本日經文開始閱讀",
         readerTitleDefault: "章節標題",
+        shortcutBtn: "匯出捷徑於桌面",
         months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
     },
     en: {
@@ -63,6 +64,7 @@ const translations = {
         langBtn: "中文",
         readerPlaceholder: "Please select today's scripture to start reading",
         readerTitleDefault: "Chapter Title",
+        shortcutBtn: "Export Desktop Shortcut",
         months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     }
 };

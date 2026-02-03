@@ -72,7 +72,10 @@
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="monthly-bar" style="width: 0%;"></div>
                     </div>
-                    <p class="monthly-text">載入中...</p>
+                    <div class="monthly-text-container"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <p class="monthly-text">載入中...</p>
+                    </div>
                 </div>
 
                 <!-- Annual Progress -->
@@ -88,11 +91,14 @@
             <footer class="app-footer">
                 <details>
                     <summary data-i18n="appTitle">資料管理</summary>
-                    <!-- Simplified title for now, logic will handle text -->
-                    <div class="data-controls" style="flex-direction: column; align-items: center;">
-                        <div style="display: flex; gap: 10px; justify-content: center;">
-                            <button class="btn-text" onclick="exportData()" data-i18n="exportBtn">匯出進度代碼</button>
-                            <button class="btn-text" onclick="importData()" data-i18n="importBtn">匯入進度代碼</button>
+                    <div class="data-controls" style="flex-direction: column; align-items: center; padding: 10px;">
+                        <div
+                            style="display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                            <button class="btn-text" onclick="exportData()" data-i18n="exportBtn">匯出備份</button>
+                            <button class="btn-text" onclick="importData()" data-i18n="importBtn">匯入備份</button>
+                            <a href="javascript:void(0)" onclick="createShortcut()" class="btn-text-small"
+                                data-i18n="shortcutBtn"
+                                style="text-decoration: underline; color: var(--primary-color); font-size: 0.8rem; margin-top: 2px;">匯出捷徑於桌面</a>
                         </div>
                         <p style="font-size: 12px; color: #999; margin-top: 5px;" data-i18n="mobileNote">*
                             手機版請使用瀏覽器才能儲存進度</p>
@@ -128,7 +134,6 @@
 
     </div>
 
-    <!-- Scripts moved to head -->
 </body>
 
 </html>
