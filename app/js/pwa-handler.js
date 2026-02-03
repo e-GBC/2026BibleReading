@@ -7,8 +7,16 @@ let deferredPrompt;
 
 // 1. Detect Environment
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isAndroid = /Android/i.test(navigator.userAgent);
 const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
 const isInAppBrowser = /Line|FBAN|FBAV/i.test(navigator.userAgent);
+
+function getAppLang() {
+    if (window.appState && window.appState.currentLang) {
+        return window.appState.currentLang;
+    }
+    return localStorage.getItem('bible_reading_lang') || 'zh';
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     initPWALogic();
@@ -38,19 +46,21 @@ function initPWALogic() {
  * Main function triggered by clicking the "Add to Home Screen" link/button
  */
 window.createShortcut = () => {
+    const isEn = getAppLang() === 'en';
     if (isIOS) {
         showIOSGuide();
     } else if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
             if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the A2HS prompt');
+                alert(isEn ? "Web app added to home screen shortcut!" : "已將本網頁加入主畫面捷徑");
             }
             deferredPrompt = null;
         });
+    } else if (isAndroid) {
+        showAndroidGuide();
     } else {
-        // Fallback or generic message for Android/Desktop if prompt not yet available
-        const isEn = typeof appState !== 'undefined' && appState.currentLang === 'en';
+        // Fallback or generic message for Desktop if prompt not yet available
         const msg = isEn
             ? "Please save the website using the following methods:\n1. Add to Bookmarks (Star icon next to URL)\n2. Find 'Save and Share' > 'Create Shortcut' in the menu"
             : "電腦瀏覽器請以以下方式儲存網站：\n1. 加入書籤（我的最愛，網址右側的星形圖示）\n2. 選單下「儲存、分享」內的「建立捷徑」";
@@ -60,8 +70,65 @@ window.createShortcut = () => {
 
 // --- UI COMPONENTS (OVERLAYS) ---
 
+function showAndroidGuide() {
+    const isEn = getAppLang() === 'en';
+    const overlay = document.createElement('div');
+    overlay.id = 'pwa-android-guide';
+    overlay.style = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); z-index: 9999; color: white;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+        padding: 20px; font-family: sans-serif;
+    `;
+
+    const title = isEn ? "Add to Home Screen" : "加入主畫面教學";
+    const step1 = isEn ? "Tap the 'Three Dots' (⋮) in the top-right" : "點選右上角內容選單「...」圖示";
+    const step2 = isEn ? "Select 'Add to Home Screen' or 'Install App'" : "點選選單中的「加到主畫面」或「安裝應用程式」";
+    const btnContent = isEn ? "Add to Home Screen" : "加到主畫面";
+
+    overlay.innerHTML = `
+        <div style="background: white; color: #333; width: 100%; max-width: 400px; border-radius: 20px; padding: 30px; position: relative; margin-top: 50px; animation: fadeIn 0.3s ease-out;">
+            <button onclick="document.getElementById('pwa-android-guide').remove()" style="position: absolute; right: 15px; top: 15px; background: none; border: none; font-size: 24px;">×</button>
+            <h2 style="margin-top: 0; text-align: center;">${title}</h2>
+            
+            <div style="margin: 25px 0;">
+                <p style="font-size: 1.2rem; display: flex; align-items: center;">
+                    <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;">1</span>
+                    ${step1}
+                </p>
+                <div style="text-align: center; margin-top: 10px;">
+                    <div style="font-size: 30px; color: #666;">⋮</div>
+                </div>
+            </div>
+
+            <div style="margin: 25px 0;">
+                <p style="font-size: 1.2rem; display: flex; align-items: center;">
+                    <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;">2</span>
+                    ${step2}
+                </p>
+                <div style="text-align: center; margin-top: 10px;">
+                    <div style="display: inline-flex; align-items: center; border: 1px solid #ddd; padding: 10px 20px; border-radius: 10px; background: #f9f9f9;">
+                         <svg width="24" height="24" viewBox="0 0 24 24" style="margin-right:10px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        <span style="font-weight: bold;">${btnContent}</span>
+                    </div>
+                </div>
+            </div>
+            
+             <p style="font-size: 0.9rem; color: #888; text-align: center; margin-top: 20px;">
+                ${isEn ? "Note: If you don't see the option, please ensure you are using Chrome browser." : "提示：若沒看到選項，請確認您使用的是 Chrome 瀏覽器。"}
+             </p>
+        </div>
+        <style>
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        </style>
+    `;
+    document.body.appendChild(overlay);
+}
+
+// --- UI COMPONENTS (OVERLAYS) ---
+
 function showInAppBrowserOverlay() {
-    const isEn = typeof appState !== 'undefined' && appState.currentLang === 'en';
+    const isEn = getAppLang() === 'en';
     const overlay = document.createElement('div');
     overlay.style = `
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -87,7 +154,7 @@ function showInAppBrowserOverlay() {
 }
 
 function showIOSGuide() {
-    const isEn = typeof appState !== 'undefined' && appState.currentLang === 'en';
+    const isEn = getAppLang() === 'en';
     const overlay = document.createElement('div');
     overlay.id = 'pwa-ios-guide';
     overlay.style = `
@@ -97,8 +164,8 @@ function showIOSGuide() {
         padding: 20px; font-family: sans-serif;
     `;
 
-    const title = isEn ? "Add to Home Screen Guide" : "加入主畫面教學";
-    const step1 = isEn ? "Tap the 'Share' icon below" : "點選下方導覽列的「分享」圖示";
+    const title = isEn ? "Add to Home Screen" : "加入主畫面";
+    const step1 = isEn ? "Tap the 'Share' icon (or '...' then Share)" : "點選網址右側「...」內的「分享」圖示";
     const step2 = isEn ? "Scroll up from 'Add Bookmark' and tap" : "於「加入書籤」再往上捲動，點擊";
     const btnContent = isEn ? "Add to Home Screen" : "加入主畫面";
 

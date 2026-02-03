@@ -1,7 +1,7 @@
 console.log("App initialized.");
 
 // State Management
-const appState = {
+window.appState = {
     currentDate: (() => {
         const d = new Date();
         const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
@@ -18,6 +18,8 @@ const appState = {
     currentBook: null, // Added for reload context
     currentChapter: null // Added for reload context
 };
+const appState = window.appState;
+
 
 // --- CONSTANTS ---
 const YEAR_START = new Date("2026-01-01");

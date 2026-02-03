@@ -1,0 +1,185 @@
+:root {
+    --primary-color: #2196F3;
+    --text-color: #333;
+    --bg-color: #f5f7fa;
+    --card-bg: #fff;
+    --spacing-lg: 24px;
+    --spacing-md: 16px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Microsoft JhengHei";
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Header */
+.guide-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--spacing-md);
+    z-index: 1000;
+}
+
+.back-link {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.back-link::before {
+    content: '←';
+    margin-right: 8px;
+    font-size: 24px;
+}
+
+.lang-toggle {
+    margin-left: auto;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Content Area */
+.guide-container {
+    max-width: 800px;
+    margin: 80px auto 40px;
+    padding: 0 var(--spacing-md);
+}
+
+.intro-section {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.intro-section h1 {
+    font-size: 32px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+/* Cards */
+.guide-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: var(--spacing-lg);
+    margin-bottom: 24px;
+    border-left: 6px solid var(--primary-color);
+}
+
+.guide-card h2 {
+    font-size: 24px;
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.content-block {
+    margin-top: 20px;
+}
+
+.content-block p {
+    font-size: 19px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    border-color: var(--primary-color);
+    background: #e3f2fd;
+    color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tut-image {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+}
+
+.tip-box {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    font-size: 18px;
+    color: #1565c0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.tip-box::before {
+    content: '💡';
+}
+
+/* Footer */
+.guide-footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888;
+    font-size: 18px;
+    border-top: 1px solid #eee;
+    margin-top: 40px;
+}
+
+[lang="en"] {
+    display: none;
+}
+
+body.lang-en [lang="zh"] {
+    display: none;
+}
+
+body.lang-en [lang="en"] {
+    display: block;
+}
+
+@media (max-width: 600px) {
+    .intro-section h1 {
+        font-size: 28px;
+    }
+}

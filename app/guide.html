@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用說明書 - 懷恩堂 2026 聖經讀經</title>
+    <link rel="stylesheet" href="css/guide.css">
+</head>
+
+<body>
+
+    <header class="guide-header">
+        <a href="index.html" class="back-link">
+            <span lang="zh">返回</span>
+            <span lang="en">Back</span>
+        </a>
+        <button class="lang-toggle" onclick="toggleLang()">
+            <span lang="zh">English</span>
+            <span lang="en">中文</span>
+        </button>
+    </header>
+
+    <main class="guide-container">
+
+        <div class="intro-section">
+            <div lang="zh">
+                <h1>平安！親愛的弟兄姊妹</h1>
+                <p style="font-size: 20px;">這是一份詳細的操作指南，幫助您輕鬆地在手機或電腦上追蹤讀經進度。</p>
+            </div>
+            <div lang="en">
+                <h1>Peace be with you!</h1>
+                <p style="font-size: 20px;">This is a detailed guide to help you easily track your Bible reading
+                    progress on mobile or desktop.</p>
+            </div>
+        </div>
+
+        <!-- 一、如何儲存讀經工具？ -->
+        <section class="guide-card">
+            <h2 lang="zh">一、如何儲存讀經工具？</h2>
+            <h2 lang="en">1. How to save this tool?</h2>
+
+            <div class="content-block">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showTab('tab01', 'PC')">【 PC 】</button>
+                    <button class="tab-btn" onclick="showTab('tab01', 'iOS')">【 iOS 】</button>
+                    <button class="tab-btn" onclick="showTab('tab01', 'Android')">【 Android 】</button>
+                </div>
+
+                <!-- PC Tab Content -->
+                <div id="content-tab01-PC" class="tab-content active">
+                    <img src="ref/tut01_PC.png" class="tut-image">
+                    <p lang="zh">點擊網址列右側的「星形」圖示加入書籤，或點擊選單中的「儲存、分享」>「建立捷徑」。</p>
+                    <p lang="en">Click the "Star" icon to the right of the address bar to bookmark, or select "Save and
+                        Share" > "Create Shortcut" from the menu.</p>
+                </div>
+
+                <!-- iOS Tab Content -->
+                <div id="content-tab01-iOS" class="tab-content">
+                    <img src="ref/tut01_iOS.png" class="tut-image">
+                    <p lang="zh">點擊下方導覽列的「分享」圖示（方塊往上箭頭），向上滑動找到「加入主畫面」(+)，點擊右上角「新增」。</p>
+                    <p lang="en">Tap the "Share" icon (square with upward arrow), scroll up to find "Add to Home Screen"
+                        (+), and tap "Add" in the top-right.</p>
+                </div>
+
+                <!-- Android Tab Content -->
+                <div id="content-tab01-Android" class="tab-content">
+                    <img src="ref/tut01_Android.png" class="tut-image">
+                    <p lang="zh">點擊右上角「三個點」選單，選擇「安裝應用程式」或「加到主畫面」。</p>
+                    <p lang="en">Tap the "Three Dots" menu, select "Install app" or "Add to Home Screen".</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 二、如何快速追回進度 -->
+        <section class="guide-card">
+            <h2 lang="zh">二、如何快速追回進度</h2>
+            <h2 lang="en">2. How to catch up on progress quickly</h2>
+
+            <div class="content-block">
+                <div lang="zh">
+                    <img src="ref/tut02_ch.jpg" class="tut-image">
+                    <p>1. 快速跳往未讀進度<br>
+                        2. 直接點選圈圈完成進度<br>
+                        3. 甚至可以直接追回整月進度！</p>
+                </div>
+                <div lang="en">
+                    <img src="ref/tut02_en.png" class="tut-image">
+                    <p>1. Quickly jump to unread plans<br>
+                        2. Tap the progress circles to mark as done<br>
+                        3. You can even catch up on the entire month at once!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 三、為何我的進度會消失 -->
+        <section class="guide-card">
+            <h2 lang="zh">三、為何我的進度會消失</h2>
+            <h2 lang="en">3. Why did my progress disappear?</h2>
+
+            <div class="content-block">
+                <div lang="zh">
+                    <p>本程式將您的進度儲存在瀏覽器的「快取」中。這就像在書本裡夾書籤，如果您更換了瀏覽器、使用「無痕模式」，或清理了手機空間，進度可能會重置。</p>
+                    <div class="tip-box">
+                        <strong>溫馨提示：</strong> 請固定使用同一個瀏覽器，或使用手機將連結加入主畫面，不清理暫存即可保留進度！
+                    </div>
+                </div>
+                <div lang="en">
+                    <p>This program stores your progress in your browser's "cache". It's like a bookmark in a book; if
+                        you switch browsers, use "incognito mode", or clear your phone space, your progress may be
+                        reset.</p>
+                    <div class="tip-box">
+                        <strong>Warm Tip:</strong> Please stick to the same browser, or add the link to your home screen
+                        on your phone. Progress is preserved as long as you don't clear the cache!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 四、如何同步進度到其他裝置？ -->
+        <section class="guide-card">
+            <h2 lang="zh">四、如何同步進度到其他裝置？</h2>
+            <h2 lang="en">4. How to sync to another device?</h2>
+            <div class="content-block">
+                <div lang="zh">
+                    <p>點擊設定中的「匯出備份」，會產生一段專屬代碼檔案。在新裝置上點擊「匯入備份」並選擇該檔案即可同步。</p>
+                </div>
+                <div lang="en">
+                    <p>Click "Export Backup" in settings to generate a unique backup file. On your new device, click
+                        "Import Backup" and select that file to sync.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="guide-footer">
+            <div lang="zh">
+                <p>若操作上有困難，歡迎主日崇拜後洽詢數位事工小組同工。</p>
+                <p style="margin-top: 10px;">願上帝祝福您！</p>
+            </div>
+            <div lang="en">
+                <p>If you have any technical difficulties, please contact the Digital Ministry team after Sunday
+                    service.</p>
+                <p style="margin-top: 10px;">God Bless You!</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        function toggleLang() {
+            document.body.classList.toggle('lang-en');
+            const newLang = document.body.classList.contains('lang-en') ? 'en' : 'zh';
+            localStorage.setItem('bible_reading_lang', newLang);
+        }
+
+        // Initialize language
+        const savedLang = localStorage.getItem('bible_reading_lang');
+        if (savedLang === 'en') {
+            document.body.classList.add('lang-en');
+        }
+
+        function showTab(groupId, tabId) {
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.includes(tabId));
+            });
+
+            // Update contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.toggle('active', content.id === `content-${groupId}-${tabId}`);
+            });
+        }
+    </script>
+</body>
+
+</html>
