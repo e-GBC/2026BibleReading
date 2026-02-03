@@ -588,35 +588,9 @@ window.importData = () => {
     input.click();
 };
 
-window.createShortcut = () => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const t = translations[appState.currentLang];
 
-    if (isMobile) {
-        const msg = appState.currentLang === 'zh'
-            ? "在手機上，請使用瀏覽器選單中的「加入主畫面」功能來建立捷徑。"
-            : "On mobile, please use the 'Add to Home Screen' option in your browser menu to create a shortcut.";
-        alert(msg);
-    } else {
-        // Desktop: Download a .url file for Windows
-        const url = window.location.href;
-        const shortcutContent = `[InternetShortcut]\nURL=${url}`;
-        const blob = new Blob([shortcutContent], { type: 'application/octet-stream' });
-        const downloadUrl = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = "懷恩堂編年式讀經.url";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(downloadUrl);
+// PWA Logic moved to pwa-handler.js
 
-        const msg = appState.currentLang === 'zh'
-            ? "捷徑檔案已下載，請將它拖曳到桌面使用。"
-            : "Shortcut file downloaded. Please drag it to your desktop.";
-        alert(msg);
-    }
-};
 
 window.toggleFontSize = () => {
     appState.fontSizeIndex = (appState.fontSizeIndex + 1) % FONT_SIZES.length;

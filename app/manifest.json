@@ -1,0 +1,30 @@
+{
+    "short_name": "聖經讀經",
+    "name": "2026 聖經讀經計畫",
+    "description": "懷恩堂 2026 年度聖經讀經進度追蹤與語音朗讀",
+    "icons": [
+        {
+            "src": "icons/icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url": "./index.html",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "scope": "./",
+    "theme_color": "#2196F3",
+    "orientation": "portrait",
+    "categories": [
+        "education",
+        "books",
+        "lifestyle"
+    ]
+}

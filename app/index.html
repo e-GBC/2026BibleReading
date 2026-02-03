@@ -6,11 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>懷恩堂編年式讀經</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
     <script src="../data/bible.js"></script>
     <script src="../data/bible_en.js"></script>
     <!-- reading_plan.json is loaded via fetch in app.js -->
     <script src="js/i18n.js"></script>
     <script src="js/app.js" defer></script>
+    <script src="js/pwa-handler.js" defer></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('Service Worker registered', reg))
+                    .catch(err => console.log('Service Worker registration failed', err));
+            });
+        }
+    </script>
 </head>
 
 <body>
