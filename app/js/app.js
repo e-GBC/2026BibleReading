@@ -141,10 +141,13 @@ async function loadData() {
 
     if (typeof profiles !== 'undefined') {
         appState.parsedBibleZh = parseBibleArray(profiles);
+        console.log("Parsed ZH Bible:", Object.keys(appState.parsedBibleZh).length, "books");
     }
 
     if (typeof profiles_en !== 'undefined') {
         appState.parsedBibleEn = parseBibleArray(profiles_en);
+        console.log("Parsed EN Bible:", Object.keys(appState.parsedBibleEn).length, "books");
+        console.log("EN Books Sample:", Object.keys(appState.parsedBibleEn).slice(0, 10));
     }
 }
 
@@ -379,6 +382,8 @@ window.loadScripture = (bookNameZh, chapter) => {
         displayName = `${bookNameEn} Chapter ${chapter}`;
 
         if (!bookData) {
+            console.error("Missing/Failed Book in EN:", bookNameEn);
+            console.log("Available Books in EN:", Object.keys(appState.parsedBibleEn));
             document.querySelector('.reader-content').innerHTML = `<p>English text not found for ${bookNameEn}</p>`;
             return;
         }
@@ -498,6 +503,36 @@ function updateStats() {
         monthText.textContent = `${monthName}: ${finishText} ${monthDone} / ${monthTotal} ${t.chapterUnit}`;
     }
 }
+
+window.completeMonth = () => {
+    const viewDate = appState.currentDate;
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    let count = 0;
+
+    appState.readingPlan.forEach(p => {
+        const d = new Date(p.date);
+        if (d.getFullYear() === year && d.getMonth() === month) {
+            if (Array.isArray(p.chapters)) {
+                p.chapters.forEach(ch => {
+                    const key = `${BOOK_MAP[p.book]}_${ch}`;
+                    if (!appState.chapterProgress[key]) {
+                        appState.chapterProgress[key] = true;
+                        count++;
+                    }
+                });
+            }
+        }
+    });
+
+    if (count > 0) {
+        saveProgress();
+        renderDashboard();
+        alert(appState.currentLang === 'zh' ? `已標記本月 ${count} 章為完成` : `Marked ${count} chapters as done for this month`);
+    } else {
+        alert(appState.currentLang === 'zh' ? "本月進度已全部完成" : "All chapters for this month are already completed");
+    }
+};
 
 // File Export/Import Logic
 window.exportData = () => {
