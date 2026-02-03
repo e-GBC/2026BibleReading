@@ -418,10 +418,13 @@ window.completeMonth = () => {
             alert(t.monthCleared.replace('%m', t.months[month]));
         }
     } else {
-        unreadKeys.forEach(key => appState.chapterProgress[key] = true);
-        saveProgress();
-        renderDashboard();
-        alert(appState.currentLang === 'zh' ? `已標記本月 ${unreadKeys.length} 章為完成` : `Marked ${unreadKeys.length} chapters done`);
+        const count = unreadKeys.length;
+        if (confirm(t.confirmMarkMonth.replace('%n', count))) {
+            unreadKeys.forEach(key => appState.chapterProgress[key] = true);
+            saveProgress();
+            renderDashboard();
+            alert(t.markMonthSuccess.replace('%n', count));
+        }
     }
 };
 

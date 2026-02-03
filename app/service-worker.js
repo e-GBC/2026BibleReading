@@ -10,7 +10,8 @@ const ASSETS = [
     './js/pwa-handler.js',
     './manifest.json',
     './icons/icon-192x192.png',
-    './icons/icon-512x512.png'
+    './icons/icon-512x512.png',
+    './ref/tut01_tool.png'
 ];
 
 self.addEventListener('install', (event) => {

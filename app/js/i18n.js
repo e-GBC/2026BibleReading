@@ -35,6 +35,8 @@ const translations = {
         guideBtn: "📖 使用說明書",
         confirmClearMonth: "是否取消本月所有進度？",
         monthCleared: "已刪除 %m 的所有進度",
+        confirmMarkMonth: "是否標記本月 %n 章為完成？",
+        markMonthSuccess: "已標記本月 %n 章為完成",
         months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
     },
     en: {
@@ -73,6 +75,8 @@ const translations = {
         guideBtn: "📖 User Guide",
         confirmClearMonth: "Clear all progress for this month?",
         monthCleared: "Deleted all progress for %m",
+        confirmMarkMonth: "Mark %n chapters as done for this month?",
+        markMonthSuccess: "Marked %n chapters done for this month",
         months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     }
 };
