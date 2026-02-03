@@ -49,16 +49,19 @@ window.createShortcut = () => {
             deferredPrompt = null;
         });
     } else {
-        // Fallback or generic message for Android/Chrome if prompt not yet available
-        alert(navigator.language.startsWith('zh')
-            ? "請選擇瀏覽器選單中的「安裝應用程式」或「加入主畫面」。"
-            : "Please select 'Install App' or 'Add to Home Screen' from your browser menu.");
+        // Fallback or generic message for Android/Desktop if prompt not yet available
+        const isEn = typeof appState !== 'undefined' && appState.currentLang === 'en';
+        const msg = isEn
+            ? "Please save the website using the following methods:\n1. Add to Bookmarks (Star icon next to URL)\n2. Find 'Save and Share' > 'Create Shortcut' in the menu"
+            : "電腦瀏覽器請以以下方式儲存網站：\n1. 加入書籤（我的最愛，網址右側的星形圖示）\n2. 選單下「儲存、分享」內的「建立捷徑」";
+        alert(msg);
     }
 };
 
 // --- UI COMPONENTS (OVERLAYS) ---
 
 function showInAppBrowserOverlay() {
+    const isEn = typeof appState !== 'undefined' && appState.currentLang === 'en';
     const overlay = document.createElement('div');
     overlay.style = `
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -66,17 +69,25 @@ function showInAppBrowserOverlay() {
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         padding: 20px; text-align: center; font-size: 1.5rem; line-height: 1.5;
     `;
+
+    const title = isEn ? "In-App Browser Detected" : "檢測到您正在使用 LINE 等內建瀏覽器";
+    const msg = isEn
+        ? 'Please click the bottom-right [...] and select <b>"Open in Browser"</b>.<br>(Safari for iOS / Chrome for Android)'
+        : '請點擊右下角 [...] 並選擇<b>「在瀏覽器中開啟」</b><br>(iOS 請用 Safari / Android 請用 Chrome)';
+    const btnText = isEn ? "Got it" : "我知道了";
+
     overlay.innerHTML = `
-        <div style="background: #2196F3; padding: 20px; border-radius: 15px; border: 2px solid white;">
-            <p>检测到您正在使用 LINE 或 Facebook 浏览器</p>
-            <p style="font-size: 1.2rem; margin-top: 10px;">請點擊右上角 [...] 並選擇<b>「使用預設瀏覽器開啟」</b><br>(iOS 請用 Safari / Android 請用 Chrome)</p>
-            <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; padding: 10px 20px; border-radius: 10px; border: none; background: white; color: #2196F3; font-weight: bold; font-size: 1.2rem;">我知道了</button>
+        <div style="background: #2196F3; padding: 20px; border-radius: 15px; border: 2px solid white; max-width: 90%;">
+            <p>${title}</p>
+            <p style="font-size: 1.2rem; margin-top: 10px;">${msg}</p>
+            <button onclick="this.parentElement.parentElement.remove()" style="margin-top: 20px; padding: 10px 20px; border-radius: 10px; border: none; background: white; color: #2196F3; font-weight: bold; font-size: 1.2rem;">${btnText}</button>
         </div>
     `;
     document.body.appendChild(overlay);
 }
 
 function showIOSGuide() {
+    const isEn = typeof appState !== 'undefined' && appState.currentLang === 'en';
     const overlay = document.createElement('div');
     overlay.id = 'pwa-ios-guide';
     overlay.style = `
@@ -86,15 +97,20 @@ function showIOSGuide() {
         padding: 20px; font-family: sans-serif;
     `;
 
+    const title = isEn ? "Add to Home Screen Guide" : "加入主畫面教學";
+    const step1 = isEn ? "Tap the 'Share' icon below" : "點選下方導覽列的「分享」圖示";
+    const step2 = isEn ? "Scroll up from 'Add Bookmark' and tap" : "於「加入書籤」再往上捲動，點擊";
+    const btnContent = isEn ? "Add to Home Screen" : "加入主畫面";
+
     overlay.innerHTML = `
         <div style="background: white; color: #333; width: 100%; max-width: 400px; border-radius: 20px 20px 0 0; padding: 30px; position: relative; animation: slideUp 0.5s ease-out;">
             <button onclick="document.getElementById('pwa-ios-guide').remove()" style="position: absolute; right: 15px; top: 15px; background: none; border: none; font-size: 24px;">×</button>
-            <h2 style="margin-top: 0; text-align: center;">加入主畫面教學</h2>
+            <h2 style="margin-top: 0; text-align: center;">${title}</h2>
             
             <div style="margin: 25px 0;">
                 <p style="font-size: 1.2rem; display: flex; align-items: center;">
                     <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;">1</span>
-                    點選下方導覽列的「分享」圖示
+                    ${step1}
                 </p>
                 <div style="text-align: center; margin-top: 10px;">
                     <svg width="40" height="40" viewBox="0 0 50 50" fill="#2196F3"><path d="M30,15V10h-10v5h-5v25h20V15H30z M25,12.5c1.4,0,2.5,1.1,2.5,2.5S26.4,17.5,25,17.5s-2.5-1.1-2.5-2.5S23.6,12.5,25,12.5z M32,37H18V18h14V37z"/><rect x="23.5" y="22" width="3" height="10" fill="#2196F3"/><polygon points="25,18 20,23 30,23" fill="#2196F3"/></svg>
@@ -104,12 +120,12 @@ function showIOSGuide() {
             <div style="margin: 25px 0;">
                 <p style="font-size: 1.2rem; display: flex; align-items: center;">
                     <span style="background: #2196F3; color: white; border-radius: 50%; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px;">2</span>
-                    向下捲動並點選「加入主畫面」
+                    ${step2}
                 </p>
                 <div style="text-align: center; margin-top: 10px;">
                     <div style="display: inline-flex; align-items: center; border: 1px solid #ddd; padding: 10px 20px; border-radius: 10px; background: #f9f9f9;">
                         <span style="font-size: 24px; margin-right: 10px;">✚</span>
-                        <span style="font-weight: bold;">加入主畫面</span>
+                        <span style="font-weight: bold;">${btnContent}</span>
                     </div>
                 </div>
             </div>
