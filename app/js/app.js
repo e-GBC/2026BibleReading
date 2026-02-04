@@ -371,9 +371,11 @@ function updateStats() {
     const t = translations[appState.currentLang];
     const totalChapters = 1189;
     const completedCount = Object.keys(appState.chapterProgress).length;
+    const annualPercent = (completedCount / totalChapters) * 100;
 
-    document.querySelector('.annual-progress .progress-bar').style.width = `${Math.round((completedCount / totalChapters) * 100)}%`;
-    document.querySelector('.annual-progress .annual-text').textContent = `${t.totalProgress} ${completedCount} / ${totalChapters} ${t.chapterUnit}`;
+    document.querySelector('.annual-progress .progress-bar').style.width = `${Math.round(annualPercent)}%`;
+    document.querySelector('.annual-progress .annual-text').textContent =
+        `${t.totalProgress} ${completedCount} / ${totalChapters} ${t.chapterUnit} ( ${annualPercent.toFixed(2)}% )`;
 
     const viewDate = appState.currentDate;
     const year = viewDate.getFullYear();
@@ -390,8 +392,10 @@ function updateStats() {
         }
     });
 
-    document.querySelector('#monthly-bar').style.width = `${monthTotal > 0 ? Math.round((monthDone / monthTotal) * 100) : 0}%`;
-    document.querySelector('.monthly-text').textContent = `${t.months[month]}: ${t.monthFinish || "Month Completion"} ${monthDone} / ${monthTotal} ${t.chapterUnit}`;
+    const monthPercent = monthTotal > 0 ? (monthDone / monthTotal) * 100 : 0;
+    document.querySelector('#monthly-bar').style.width = `${Math.round(monthPercent)}%`;
+    document.querySelector('.monthly-text').textContent =
+        `${t.months[month]}: ${t.monthFinish || "Month Completion"} ${monthDone} / ${monthTotal} ${t.chapterUnit} ( ${Math.round(monthPercent)}% )`;
 }
 
 window.completeMonth = () => {
