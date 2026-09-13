@@ -23,22 +23,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initPWALogic() {
-    // Hide buttons if already installed
-    if (isStandalone) {
-        document.querySelectorAll('[data-i18n="shortcutBtn"]').forEach(el => el.classList.add('hidden'));
+    // 1. Priority: Handle In-App Browsers (LINE/FB/WeChat)
+    if (isInAppBrowser && !isStandalone) {
+        window.suppressGuides = true;
+        showInAppBrowserOverlay();
         return;
     }
 
-    // Handle In-App Browsers (LINE/FB)
-    if (isInAppBrowser) {
-        showInAppBrowserOverlay();
-    }
-
-    // Catch Android/Desktop Install Prompt
+    // 2. Catch Android/Desktop Install Prompt
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
     });
+
+    // 3. Handle URL param for auto-install trigger (from Guide)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('install') === 'true') {
+        setTimeout(() => {
+            window.createShortcut();
+        }, 800);
+    }
 }
 
 /**
@@ -46,6 +50,12 @@ function initPWALogic() {
  */
 window.createShortcut = () => {
     const isEn = getAppLang() === 'en';
+
+    // 如果在 iframe 中，通知父視窗觸發安裝提示
+    if (window.self !== window.top) {
+        window.parent.postMessage('triggerInstall', '*');
+    }
+
     if (isIOS) {
         showIOSGuide();
     } else if (deferredPrompt) {

@@ -4,8 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>使用說明書 - 懷恩堂 2026 聖經讀經</title>
-    <link rel="stylesheet" href="css/guide.css">
+    <title>使用說明書 | 懷恩堂數位事工</title>
+    <meta name="description" content="台北懷恩堂 2026 聖經讀經計畫應用程式使用指南">
+    <link rel="stylesheet" href="css/guide.css?v=1.1.21">
+    <link id="theme-link" rel="stylesheet" href="css/theme-light.css?v=1.1.21">
+    <style>
+        .btn-action {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn-action:active {
+            transform: translateY(1px);
+        }
+
+        .list-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .list-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8W4R7CQMR0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8W4R7CQMR0');
+    </script>
 </head>
 
 <body>
@@ -24,102 +78,86 @@
         <div class="intro-section">
             <div lang="zh">
                 <h1>平安！親愛的弟兄姊妹</h1>
-                <p style="font-size: 20px;">這是一份操作指南，幫助您輕鬆地在手機或電腦上追蹤讀經進度。</p>
+                <p style="font-size: 20px;">歡迎查閱 2026 懷恩堂讀經計畫操作指南。</p>
             </div>
             <div lang="en">
                 <h1>Peace be with you!</h1>
-                <p style="font-size: 20px;">This is a guide to help you easily track your Bible reading progress on
-                    mobile or desktop.</p>
+                <p style="font-size: 20px;">This is a guide for the 2026 GBC Bible Reading Plan.</p>
             </div>
         </div>
 
-        <!-- 一、如何儲存讀經工具？ -->
+        <!-- 一、這麼多讀經工具，要用哪個好？ -->
         <section class="guide-card">
-            <h2 lang="zh">一、如何儲存讀經工具？</h2>
-            <h2 lang="en">1. How to save this tool?</h2>
+            <h2 lang="zh">一、這麼多讀經工具，要用哪個好？</h2>
+            <h2 lang="en">1. Which tool should I use?</h2>
 
             <div class="content-block">
-                <!-- New Tool Shortcut Section -->
-                <div style="margin-bottom: 10px; border-bottom: 2px dashed #eee; padding-bottom: 20px;">
-                    <p lang="zh">從工具設定，點擊「匯出捷徑於桌面」。</p>
-                    <p lang="en">From Tools settings, click "Export Desktop Shortcut".</p>
-                    <img src="ref/tut01_tool.png" class="tut-image">
+                <div lang="zh">
+                    <p>感謝主，在提出年度讀經計劃後，會友們熱烈響應，也持續提出建議，讓教牧行政團隊能持續更新改進，預備合適的工具給不同需求的使用者。</p>
+                    <div class="list-item"><strong>紙本版：</strong>適合不使用3C裝置者</div>
+                    <div class="list-item"><strong>試算表：</strong>已有讀經工具，且擅長使用網頁登錄記錄</div>
+                    <div class="list-item"><strong>APP版：</strong>綜合需求，適合後來加入，仍可追上進度</div>
+                    <p>您仍可繼續使用您已經習慣的版本。<br>若是新加入讀經計畫的弟兄姊妹，歡迎優先使用APP版。</p>
                 </div>
-
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="showTab('tab01', 'PC')"> PC </button>
-                    <button class="tab-btn" onclick="showTab('tab01', 'iOS')"> iOS </button>
-                    <button class="tab-btn" onclick="showTab('tab01', 'Android')"> Android </button>
-                </div>
-
-                <!-- PC Tab Content -->
-                <div id="content-tab01-PC" class="tab-content active">
-                    <img src="ref/tut01_PC.png" class="tut-image">
-                    <p lang="zh">直接安裝應用程式：<b>2026 聖經讀經計畫</b> 即可。<br>或者，點擊網址列右側「星形」圖示加入書籤，<br>或點擊選單「儲存分享」>「建立捷徑」。</p>
-                    <p lang="en">Directly install the app: <b>2026 Bible Reading Plan</b>.<br>Or, click the "Star" icon
-                        to the right of the address bar to bookmark, <br>or select "Save
-                        and Share" > "Create Shortcut" from the menu.</p>
-                </div>
-
-                <!-- iOS Tab Content -->
-                <div id="content-tab01-iOS" class="tab-content">
-                    <img src="ref/tut01_iOS.png" class="tut-image">
-                    <p lang="zh">點擊下方導覽列的「分享」圖示（方塊往上箭頭），<br>向上滑動找到「加入主畫面」(+)，<br>點擊右上角「新增」。</p>
-                    <p lang="en">Tap the "Share" icon (square with upward arrow), <br>scroll up to find "Add to Home
-                        Screen" (+), <br>and tap "Add" in the top-right.</p>
-                </div>
-
-                <!-- Android Tab Content -->
-                <div id="content-tab01-Android" class="tab-content">
-                    <img src="ref/tut01_Android.png" class="tut-image">
-                    <p lang="zh">直接安裝應用程式：<b>2026 聖經讀經計畫</b> 即可。<br>或者，於瀏覽器點擊右上角「三個點」選單，<br>選擇「安裝應用程式」或「加到主畫面」。</p>
-                    <p lang="en">Directly install the app: <b>2026 Bible Reading Plan</b>.<br>Or, tap the "Three Dots"
-                        menu in your browser, <br>and select "Install app" or "Add to Home Screen".</p>
+                <div lang="en">
+                    <p>Thank the Lord for the enthusiastic response. Our team continues to improve tools for different
+                        needs.</p>
+                    <div class="list-item"><strong>Paper:</strong> For non-tech users.</div>
+                    <div class="list-item"><strong>Spreadsheet:</strong> For those who enjoy web logging.</div>
+                    <div class="list-item"><strong>APP:</strong> Recommended for new joiners to catch up.</div>
+                    <p>You can continue to use the version you are used to.<br>If you are a new member of the Bible
+                        Reading Plan, you are welcome to use the APP version first.</p>
                 </div>
             </div>
         </section>
 
-        <!-- 二、如何快速追回進度 -->
+        <!-- 二、檔案不見了？什麼是安裝應用程式？ -->
         <section class="guide-card">
-            <h2 lang="zh">二、如何快速追回進度</h2>
-            <h2 lang="en">2. How to catch up on progress quickly</h2>
+            <h2 lang="zh">二、檔案不見了？什麼是安裝應用程式？</h2>
+            <h2 lang="en">2. Progress gone? What is Install App?</h2>
 
             <div class="content-block">
                 <div lang="zh">
-                    <img src="ref/tut02_ch.jpg" class="tut-image">
-                    <p>1. 快速跳往未讀進度<br>
-                        2. 直接點選圈圈完成進度<br>
-                        3. 甚至可以直接追回整月進度！</p>
+                    <p>此次製作的APP版本為網頁應用程式。</p>
+                    <p>若使用Line啟用網頁，即可能發生記錄遺失的問題；<br><strong>安裝應用程式</strong>則可以確保資料存檔於裝置瀏覽器記憶體中。</p>
+                    <p>您可以點擊下方按鈕進行應用程式安裝。安裝成功後，會在您的桌面新增一個捷徑，作為未來懷恩堂數位事工的平台入口。</p>
+
+                    <a href="index.html?install=true" class="btn-action">安裝應用程式</a>
                 </div>
                 <div lang="en">
-                    <img src="ref/tut02_en.png" class="tut-image">
-                    <p>1. Quickly jump to unread plans<br>
-                        2. Tap the progress circles to mark as done<br>
-                        3. You can even catch up on the entire month at once!</p>
+                    <p>This is a Web App. Opening via Line might cause data loss.</p>
+                    <p><strong>Installing it</strong> ensures persistence.</p>
+                    <p>You can click the button below to install the application. After successful installation, a
+                        shortcut will be created on your desktop, serving as the entry point for future GBC digital
+                        ministry platforms.</p>
+                    <a href="index.html?install=true" class="btn-action">Install App</a>
                 </div>
             </div>
         </section>
 
-        <!-- 三、為何我的進度會消失 -->
+        <!-- 三、工具使用說明？快速追回進度？ -->
         <section class="guide-card">
-            <h2 lang="zh">三、為何我的進度會消失</h2>
-            <h2 lang="en">3. Why did my progress disappear?</h2>
+            <h2 lang="zh">三、工具使用說明？快速追回進度？</h2>
+            <h2 lang="en">3. Features & Catching Up</h2>
 
             <div class="content-block">
                 <div lang="zh">
-                    <p>本程式將進度儲存在瀏覽器「快取」中。<br>就像在書本裡夾書籤，如果更換了瀏覽器、使用「無痕模式」，或清理了手機空間，進度可能會重置。</p>
-                    <div class="tip-box">
-                        <strong>溫馨提示</strong> 請固定使用同一個瀏覽器，或使用手機將連結加入主畫面。
-                    </div>
+                    <p>讀經工具功能包含：</p>
+                    <div class="list-item"><strong>每日讀經：</strong>中英文、AI語音讀經，文字放大</div>
+                    <div class="list-item"><strong>追回進度：</strong>完成單月進度、完成今天以前所有進度</div>
+                    <div class="list-item"><strong>進度總覽：</strong>以動畫模式看到整體進度</div>
+
+                    <button class="btn-action"
+                        onclick="localStorage.removeItem('bible_reading_guide_finished'); window.location.href='index.html?showGuide=true';">觀看教學</button>
                 </div>
                 <div lang="en">
-                    <p>This program stores your progress in your browser's "cache". <br>It's like a bookmark in a book;
-                        if you switch browsers, use "incognito mode", or clear your phone space, your progress may be
-                        reset.</p>
-                    <div class="tip-box">
-                        <strong>Tip:</strong> Please stick to the same browser, or add the link to your home screen on
-                        your phone.
-                    </div>
+                    <p>Features include:</p>
+                    <div class="list-item"><strong>Daily Reading:</strong> Bilingual, AI Voice, Text Resizing.</div>
+                    <div class="list-item"><strong>Catch Up:</strong> Finish month or all past items instantly.</div>
+                    <div class="list-item"><strong>Summary:</strong> View progress with animations.</div>
+                    <button class="btn-action"
+                        onclick="localStorage.removeItem('bible_reading_guide_finished'); window.location.href='index.html?showGuide=true';">Show
+                        Tutorial</button>
                 </div>
             </div>
         </section>
@@ -127,29 +165,79 @@
         <!-- 四、如何同步進度到其他裝置？ -->
         <section class="guide-card">
             <h2 lang="zh">四、如何同步進度到其他裝置？</h2>
-            <h2 lang="en">4. How to sync to another device?</h2>
+            <h2 lang="en">4. Syncing to Other Devices</h2>
             <div class="content-block">
                 <div lang="zh">
-                    <p>點擊設定中的「匯出備份」，會產生一段專屬代碼檔案。在新裝置上點擊「匯入備份」並選擇該檔案即可同步。</p>
+                    <p>點擊工具中的「匯出備份」，會產生一段專屬代碼檔案。在新裝置上點擊「匯入備份」並選擇該檔案即可同步。</p>
                 </div>
                 <div lang="en">
-                    <p>Click "Export Backup" in settings to generate a unique backup file. On your new device, click
-                        "Import Backup" and select that file to sync.</p>
+                    <p>Use "Export Archive" to get a file/code, then "Import Archive" on your new device.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- 五、如何更新APP？ -->
+        <section class="guide-card">
+            <h2 lang="zh">五、如何更新APP？</h2>
+            <h2 lang="en">5. How to Update?</h2>
+            <div class="content-block">
+                <div lang="zh">
+                    <p>未來若教會公告需要使用者更新APP，使用者可使用「工具設定」下的<strong>「手動更新」</strong>，即可連線更新至最新版本資料。更新後可比對工具設定下方的版本編號是否正確。</p>
+                </div>
+                <div lang="en">
+                    <p>Use "Force Update" in Tools settings when maintenance is announced. Check version at the footer.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share Section -->
+        <section class="guide-card share-card" style="text-align: center; border-left: none;">
+            <h2 lang="zh">將這個APP分享給更多人，一起來讀經吧！</h2>
+            <h2 lang="en">Share this APP and read the Bible together!</h2>
+
+            <div style="margin: 20px 0;">
+                <img src="../ref/e-GBC-qrcode.png"
+                    style="width: 200px; border: 10px solid white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            </div>
+
+            <div class="share-box">
+                <div lang="zh">
+                    <p style="font-size: 16px; margin-bottom: 15px;">邀請您進行一年讀經一遍的計畫！</p>
+                    <p style="font-size: 16px; margin-bottom: 15px;">https://www.gbc.org.tw/e-gbc/</p>
+                </div>
+                <div lang="en">
+                    <p style="font-size: 16px; margin-bottom: 15px;">Invite you to join Bible reading plan!</p>
+                    <p style="font-size: 16px; margin-bottom: 15px;">https://www.gbc.org.tw/e-gbc/</p>
+                </div>
+                <button class="btn-action" style="margin: 0;" onclick="copyShareText()">
+                    <span lang="zh">點擊複製文字</span>
+                    <span lang="en">Copy text to clipboard</span>
+                </button>
             </div>
         </section>
 
         <footer class="guide-footer">
             <div lang="zh">
-                <p style="margin-top: 10px;">願上帝祝福您！</p>
+                <p>願上帝祝福您！</p>
             </div>
             <div lang="en">
-                <p style="margin-top: 10px;">God Bless You!</p>
+                <p>God Bless You!</p>
             </div>
         </footer>
     </main>
 
     <script>
+        function copyShareText() {
+            const isEn = document.body.classList.contains('lang-en');
+            const zhText = "邀請您進行一年讀經一遍的計畫！\nhttps://www.gbc.org.tw/e-gbc/";
+            const enText = "Invite you to join Bible reading plan!\nhttps://www.gbc.org.tw/e-gbc/";
+            const text = isEn ? enText : zhText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert(document.body.classList.contains('lang-en') ? "Copied!" : "已複製到剪貼簿");
+            });
+        }
+
         function toggleLang() {
             document.body.classList.toggle('lang-en');
             const newLang = document.body.classList.contains('lang-en') ? 'en' : 'zh';
@@ -161,14 +249,14 @@
             document.body.classList.add('lang-en');
         }
 
-        function showTab(groupId, tabId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText.includes(tabId));
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.toggle('active', content.id === `content-${groupId}-${tabId}`);
-            });
+        const savedTheme = localStorage.getItem('bible_reading_theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            const themeLink = document.getElementById('theme-link');
+            if (themeLink) themeLink.href = 'css/theme-dark.css?v=1.1.21';
         }
+        document.body.classList.add('guide-page-body');
+
     </script>
 </body>
 

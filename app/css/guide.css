@@ -184,3 +184,67 @@ body.lang-en [lang="en"] {
         font-size: 28px;
     }
 }
+
+/* Dark Mode */
+body.dark-theme {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --primary-color: #3d5afe;
+}
+
+body.dark-theme .guide-header {
+    background: #1e1e1e;
+    border-bottom-color: #333;
+}
+
+body.dark-theme .intro-section h1 {
+    color: #fff;
+}
+
+body.dark-theme .guide-card {
+    background: #1e1e1e;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-left-color: #3d5afe;
+}
+
+body.dark-theme .guide-card h2 {
+    color: #3d5afe;
+}
+
+body.dark-theme .tab-btn {
+    background: #252525;
+    border-color: #333;
+    color: #aaa;
+}
+
+body.dark-theme .tab-btn.active {
+    background: #1a237e;
+    border-color: #3d5afe;
+    color: #fff;
+}
+
+body.dark-theme .tip-box {
+    background: #1a1a00;
+    color: #cca300;
+}
+
+body.dark-theme .guide-footer {
+    border-top-color: #333;
+}
+
+body.dark-theme .tut-image {
+    border-color: #333;
+    filter: brightness(0.8);
+}
+
+.share-card {
+    background: #fafafa;
+}
+
+.share-box {
+    background: #f1f3f5;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+}

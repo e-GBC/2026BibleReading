@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>年度讀經總覽 | 懷恩堂數位事工</title>
+    <meta name="description" content="台北懷恩堂 2026 年度聖經讀經進度總覽與動畫演示">
+    <link rel="stylesheet" href="css/style.css?v=1.1.21">
+    <link rel="stylesheet" href="css/summary.css?v=1.1.21">
+    <link id="theme-link" rel="stylesheet" href="css/theme-light.css?v=1.1.21">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8W4R7CQMR0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8W4R7CQMR0');
+    </script>
+</head>
+
+
+<body>
+    <header class="summary-header">
+        <div class="nav-row">
+            <a href="index.html" class="back-link">
+                <span lang="zh">返回</span>
+                <span lang="en">Back</span>
+            </a>
+            <div class="month-selector">
+                <button class="month-arrow" id="prevMonth" onclick="changeSummaryMonth(-1)">◀</button>
+                <h1 class="current-month-label" id="monthLabel">--</h1>
+                <button class="month-arrow" id="nextMonth" onclick="changeSummaryMonth(1)">▶</button>
+            </div>
+            <div style="width: 48px;"></div> <!-- Spacer for balance -->
+        </div>
+    </header>
+
+    <main class="summary-container">
+        <!-- Progress Header Area -->
+        <div class="progress-header-card" id="progressHeader">
+            <!-- Percentage & Stamp Area -->
+            <div class="percentage-area">
+                <div class="percentage-big" id="percentDisplay">0%</div>
+                <!-- Mission Complete Stamp -->
+                <div class="stamp-container" id="stampContainer">
+                    <div class="mission-stamp">Complete</div>
+                </div>
+            </div>
+            <div class="text-area">
+                <p class="theology-text" id="theologyText"></p>
+                <p class="feedback-text" id="feedbackText"></p>
+            </div>
+        </div>
+
+        <div id="summaryContainer">
+            <!-- Daily Rows will be injected via JS -->
+        </div>
+    </main>
+
+    <script src="../data/bible.js"></script>
+    <script src="../data/bible_en.js"></script>
+    <script src="js/i18n.js?v=1.1.21"></script>
+    <script src="js/summary.js?v=1.1.21"></script>
+    <script>
+        const savedTheme = localStorage.getItem('bible_reading_theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            const themeLink = document.getElementById('theme-link');
+            if (themeLink) themeLink.href = 'css/theme-dark.css?v=1.1.21';
+        }
+    </script>
+</body>
+
+
+</html>

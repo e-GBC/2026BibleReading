@@ -1,0 +1,76 @@
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #27ae60;
+    --text-color: #333;
+    --bg-color: #f4f4f4;
+    --card-bg: #ffffff;
+    --border-color: #eee;
+    --secondary-bg: #ffffff;
+    --header-bg: #ffffff;
+    --footer-bg: #ffffff;
+    --tool-btn-bg: #f8f9fa;
+    --tool-btn-text: #555;
+    --tool-btn-border: #ddd;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.sidebar,
+.app-header,
+.reader-header,
+.bottom-sheet,
+.modal-content,
+.sidebar-footer,
+.sheet-footer {
+    background-color: var(--header-bg);
+    border-color: #ddd;
+}
+
+.btn-tools-trigger {
+    background: var(--tool-btn-bg);
+    color: var(--tool-btn-text);
+    border-color: var(--tool-btn-border);
+}
+
+.progress-bar-container {
+    background-color: #eee;
+}
+
+.annual-progress {
+    border-top: 1px solid var(--border-color);
+}
+
+.monthly-text,
+.annual-text {
+    font-size: 0.95rem;
+    color: #666;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Guide Card Light */
+.guide-card {
+    background: #fff;
+    border-left-color: var(--primary-color);
+}
+
+.content-block {
+    color: #666;
+}
+
+/* Summary Light */
+.summary-header {
+    background: white;
+}
+
+.daily-row {
+    background: white;
+}
+
+.chapter-box {
+    background: #f0f2f5;
+    color: #444;
+}

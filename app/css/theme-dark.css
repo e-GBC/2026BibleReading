@@ -1,0 +1,202 @@
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --primary-color: #3d5afe;
+    --accent-color: #4caf50;
+    --border-color: #000000;
+    /* Black line in dark mode */
+    --secondary-bg: #252525;
+    --header-bg: #252525;
+    --footer-bg: #252525;
+    --tool-btn-bg: #0d47a1;
+    /* Dark blue button */
+    --tool-btn-text: #ffffff;
+    --tool-btn-border: #1565c0;
+}
+
+body,
+html {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+.sidebar,
+.app-header,
+.reader-header,
+.bottom-sheet,
+.modal-content,
+.sidebar-footer,
+.sheet-footer {
+    background-color: var(--secondary-bg) !important;
+    border-color: #333 !important;
+}
+
+.btn-tools-trigger {
+    background: var(--tool-btn-bg) !important;
+    color: var(--tool-btn-text) !important;
+    border-color: var(--tool-btn-border) !important;
+}
+
+.progress-bar-container {
+    background-color: #333333 !important;
+}
+
+.annual-progress {
+    border-top: 1px solid var(--border-color) !important;
+}
+
+.monthly-text,
+.annual-text {
+    font-size: 0.95rem;
+    color: #aaaaaa !important;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Guide Card Dark */
+.guide-card {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+    border-left-color: #3d5afe !important;
+}
+
+.content-block {
+    color: #ccc !important;
+}
+
+/* Summary Dark */
+.summary-container {
+    background-color: var(--bg-color) !important;
+}
+
+.summary-header {
+    background: #1e1e1e !important;
+    border-bottom: 1px solid #333 !important;
+}
+
+.daily-row {
+    background: #1e1e1e !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+.chapter-box {
+    background: #252525 !important;
+    color: #ccc !important;
+    border-color: #333 !important;
+}
+
+.chapter-box.done {
+    background: #1a237e !important;
+    color: #90caf9 !important;
+}
+
+.date-col {
+    color: #3d5afe !important;
+    border-right-color: #333 !important;
+}
+
+.back-link,
+.current-month-label {
+    color: #eee !important;
+}
+
+/* Dark Mode Adjustments */
+body.dark-theme ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.dark-theme ::-webkit-scrollbar-track {
+    background: #1e1e1e !important;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+    background: #444 !important;
+    border-radius: 4px;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: #555 !important;
+}
+
+/* Onboarding Text Colors */
+body.dark-theme .welcome-text,
+body.dark-theme .pwa-text {
+    color: #90caf9 !important;
+    /* Brighter blue/gray */
+}
+
+body.dark-theme .qa-hint-box p {
+    color: #e0e0e0 !important;
+}
+
+/* Appearance Settings Button Highlight */
+body.dark-theme .appearance-footer button:active,
+body.dark-theme .btn-save:active,
+body.dark-theme .btn-reset:active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Active Tool Item Highlight - Force Black */
+body.dark-theme .tool-item:active,
+body.dark-theme .tool-item:focus,
+body.dark-theme .tool-item:hover:active {
+    background-color: #000000 !important;
+}
+
+body.dark-theme .tool-item:active .tool-icon,
+body.dark-theme .tool-item:focus .tool-icon {
+    background-color: #1a1a1a !important;
+}
+
+
+
+/* Guide Share Box in Dark Mode */
+body.dark-theme .share-card {
+    background-color: #1e1e1e !important;
+}
+
+body.dark-theme .share-box {
+    background-color: #252525 !important;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    border: 1px solid #333;
+}
+
+body.dark-theme .share-box p {
+    color: #aaa !important;
+}
+
+/* Base style for standalone pages like guide.html */
+body.dark-theme.guide-page-body,
+body.dark-theme {
+    background-color: #121212 !important;
+}
+
+/* QR Code Border */
+body.dark-theme img[src*="qrcode"] {
+    border-color: #333 !important;
+    background: white;
+    /* Keep white for scanning contrast */
+    padding: 5px;
+}
+
+/* Reader Nav Horizontal Line */
+body.dark-theme .reader-nav {
+    border-top-color: #333 !important;
+}
+
+/* Dark Mode Catch-up Banner Colors */
+body.dark-theme .catch-up-banner {
+    background-color: #332b00 !important;
+    /* Dark yellow */
+    border-color: #443a00 !important;
+    color: #fff9c4 !important;
+    /* Pale yellow text */
+}
+
+body.dark-theme .catch-up-banner .banner-text strong {
+    color: #fffde7 !important;
+}

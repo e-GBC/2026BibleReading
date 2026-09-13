@@ -1,0 +1,504 @@
+/* Summary Page Styling */
+body {
+    background-color: #f8f9fa;
+    padding-bottom: 50px;
+    margin: 0;
+    overflow-y: scroll;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.summary-header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.back-link {
+    text-decoration: none;
+    font-size: 16px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    width: 80px;
+    /* Force width for balance */
+}
+
+/* Month Selector */
+.month-selector {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.month-arrow {
+    background: #f0f2f5;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2196F3;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.month-arrow:hover {
+    background: #e3f2fd;
+    transform: scale(1.1);
+}
+
+.month-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.current-month-label {
+    font-size: 20px;
+    margin: 0;
+    color: #333;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Progress Header Card */
+/* Progress Header Card */
+.progress-header-card {
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: background 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-header-card.blue {
+    background: linear-gradient(135deg, #2196F3, #1565C0);
+    box-shadow: 0 15px 30px rgba(33, 150, 243, 0.4);
+}
+
+.progress-header-card.orange {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+    box-shadow: 0 15px 30px rgba(255, 152, 0, 0.3);
+}
+
+.progress-header-card.green {
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    box-shadow: 0 15px 30px rgba(76, 175, 80, 0.3);
+}
+
+.progress-header-card.gray {
+    background: linear-gradient(135deg, #9E9E9E, #616161);
+    box-shadow: 0 15px 30px rgba(158, 158, 158, 0.2);
+}
+
+.percentage-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    flex-shrink: 0;
+    z-index: 5;
+}
+
+.percentage-big {
+    font-size: 85px;
+    font-weight: 900;
+    line-height: 1;
+    width: 100%;
+    text-align: center;
+    font-family: 'Outfit', sans-serif;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.3s ease;
+}
+
+.vh-hide {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.text-area {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    z-index: 2;
+}
+
+.theology-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0;
+    opacity: 0.95;
+    line-height: 1.4;
+}
+
+.feedback-text {
+    font-size: 0.95rem;
+    margin: 0;
+    opacity: 0.85;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 15px;
+    border-radius: 10px;
+    border-left: 4px solid rgba(255, 255, 255, 0.6);
+}
+
+/* --- COMPLETE STAMP --- */
+.stamp-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    transition: none;
+    transform: rotate(-15deg) scale(5);
+}
+
+.stamp-container.animate {
+    animation: stampSlam 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.mission-stamp {
+    border: 5px double rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 8px 15px;
+    color: rgba(255, 255, 255, 0.95);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Grunge Texture for Stamp */
+.mission-stamp::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.3;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+@keyframes stampSlam {
+    0% {
+        opacity: 0;
+        transform: translate(30px, -100px) rotate(-45deg) scale(5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotate(-15deg) scale(1.1);
+    }
+}
+
+/* Screen Shake */
+.shake-it {
+    animation: screenShake 0.2s ease-in-out;
+}
+
+@keyframes screenShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-2px, 2px);
+    }
+
+    50% {
+        transform: translate(2px, -2px);
+    }
+
+    75% {
+        transform: translate(-2px, -2px);
+    }
+}
+
+/* ... rest of existing styles ... */
+@media (max-width: 600px) {
+    .progress-header-card {
+        flex-direction: column;
+        gap: 15px;
+        padding: 30px 20px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .percentage-area {
+        width: 100%;
+        min-width: unset;
+        min-height: 100px;
+    }
+
+    .percentage-big {
+        font-size: 70px;
+    }
+
+    .stamp-container {
+        left: 0;
+        margin-left: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+.summary-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.daily-row {
+    display: flex;
+    align-items: flex-start;
+    background: white;
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2), opacity 0.4s ease;
+}
+
+.daily-row.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.date-col {
+    font-weight: bold;
+    color: #2196F3;
+    font-size: 18px;
+    margin-right: 12px;
+    min-width: 30px;
+    text-align: center;
+    border-right: 2px solid #eee;
+    padding-right: 12px;
+    margin-top: 4px;
+}
+
+.chapters-col {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.chapter-box {
+    display: flex;
+    align-items: center;
+    background: #f0f2f5;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    /* Updated to 14px */
+    color: #444;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.chapter-box.done {
+    background: #e3f2fd;
+    color: #1976D2;
+    border-color: #bbdefb;
+}
+
+.chk-icon {
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #bdc3c7;
+    border-radius: 3px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    flex-shrink: 0;
+}
+
+.chapter-box.done .chk-icon {
+    background: #2196F3;
+    border-color: #2196F3;
+    transform: scale(1.1);
+}
+
+.chk-icon::after {
+    content: '✓';
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    display: none;
+}
+
+.chapter-box.done .chk-icon::after {
+    display: block;
+}
+
+/* Book Name Styling */
+.book-name {
+    margin-right: 4px;
+    font-weight: 500;
+}
+
+/* Responsive Fixes */
+@media (max-width: 600px) {
+    .progress-header-card {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .percentage-big {
+        font-size: 60px;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .text-area {
+        align-items: center;
+    }
+
+    .feedback-text {
+        border-left: none;
+        border-top: 3px solid rgba(255, 255, 255, 0.5);
+    }
+}
+
+/* Scrollbar for Desktop */
+@media (min-width: 1024px) {
+    body::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    body::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background: #2196F3;
+        border-radius: 10px;
+    }
+}
+
+/* Animation for counter */
+@keyframes countUp {
+    from {
+        opacity: 0.5;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.percentage-big.updating {
+    animation: countUp 0.1s ease-out;
+}
+
+/* --- Dark Mode for Summary --- */
+body.dark-theme,
+body.dark-theme html {
+    background-color: #121212 !important;
+}
+
+body.dark-theme .summary-container {
+    background-color: #121212;
+}
+
+
+body.dark-theme .summary-header {
+    background: #1e1e1e;
+    border-bottom: 1px solid #333;
+}
+
+body.dark-theme .current-month-label {
+    color: #eee;
+}
+
+body.dark-theme .back-link {
+    color: #aaa;
+}
+
+body.dark-theme .month-arrow {
+    background: #252525;
+}
+
+body.dark-theme .month-arrow:hover {
+    background: #333;
+}
+
+body.dark-theme .daily-row {
+    background: #1e1e1e;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .date-col {
+    color: #3d5afe;
+    border-right-color: #333;
+}
+
+body.dark-theme .chapter-box {
+    background: #252525;
+    color: #ccc;
+    border-color: #333;
+}
+
+body.dark-theme .chapter-box.done {
+    background: #1a237e;
+    color: #90caf9;
+    border-color: #283593;
+}
+
+body.dark-theme .chk-icon {
+    background: #333;
+    border-color: #444;
+}
+
+body.dark-theme .chapter-box.done .chk-icon {
+    background: #3d5afe;
+    border-color: #3d5afe;
+}

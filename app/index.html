@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>懷恩堂編年式讀經</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>2026 讀經計畫 | 懷恩堂數位事工</title>
+    <meta name="description" content="台北懷恩堂 2026 年度聖經讀經進度追蹤與資源工具">
+    <link rel="stylesheet" href="css/style.css?v=1.1.26">
+    <link id="theme-link" rel="stylesheet" href="css/theme-light.css?v=1.1.26">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2196F3">
     <link rel="icon" type="image/png" href="icons/icon-192x192.png">
@@ -13,18 +15,27 @@
 
     <script src="../data/bible.js"></script>
     <script src="../data/bible_en.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/app.js" defer></script>
-    <script src="js/pwa-handler.js" defer></script>
+    <script src="js/i18n.js?v=1.1.26"></script>
+    <script src="js/app.js?v=1.1.26" defer></script>
+    <script src="js/pwa-handler.js?v=1.1.26" defer></script>
 
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('Service Worker registered', reg))
-                    .catch(err => console.log('Service Worker registration failed', err));
+                    .then(reg => {
+                        console.log('SW Registered');
+                    });
             });
         }
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8W4R7CQMR0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8W4R7CQMR0');
     </script>
 </head>
 
@@ -32,42 +43,45 @@
     <div id="app">
         <!-- Left Panel: Progress & Dashboard -->
         <aside class="sidebar">
-            <header class="app-header">
-                <h1 data-i18n="appTitle">每日讀經</h1>
+            <header class="app-header" style="position: relative; padding-bottom: 5px;">
+                <h1 data-i18n="appTitle" style="margin-bottom: 8px;">每日讀經</h1>
                 <button id="lang-toggle-dashboard" class="btn-text" onclick="toggleLanguage()"
-                    style="font-size: 0.9rem; position: absolute; right: 15px; top: 15px;">English</button>
+                    style="font-size: 0.9rem; position: absolute; right: 15px; top: 15px; color: #888;">English</button>
 
                 <div class="date-controls">
                     <button class="btn-icon-small" onclick="changeDay(-1)">◀</button>
-                    <span class="date-display">載入中...</span>
+                    <span class="date-display" style="font-size: 1.5rem;">載入中...</span>
                     <button class="btn-icon-small" onclick="changeDay(1)">▶</button>
                 </div>
 
-                <div style="margin-top: 5px;">
+                <div style="margin-top: 5px; height: 24px;">
                     <button id="btn-return-today" class="btn-text hidden" onclick="goToToday()" data-i18n="navBack">↺
                         返回今日</button>
                 </div>
-
-                <div class="month-controls">
-                    <button class="btn-text" onclick="changeMonth(-1)" data-i18n="prevMonth">◀ 上個月</button>
-                    <button class="btn-text" onclick="changeMonth(1)" data-i18n="nextMonth">下個月 ▶</button>
-                </div>
             </header>
 
-            <div id="catch-up-container" class="hidden"></div>
-
             <div class="dashboard-content">
-                <div class="daily-card" id="today-card">
+                <div class="daily-card" id="today-card" style="margin-bottom: 15px;">
                     <div class="card-content">
                         <h2>載入中...</h2>
                     </div>
+                </div>
+
+                <div class="month-controls"
+                    style="display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 5px; margin-bottom: 25px;">
+                    <button class="btn-text" onclick="changeMonth(-1)" style="font-size: 1.1rem; flex: 0 0 auto;">◀
+                        上個月</button>
+                    <div id="catch-up-container" style="flex: 1; min-width: 0;"></div>
+                    <button class="btn-text" onclick="changeMonth(1)" style="font-size: 1.1rem; flex: 0 0 auto;">下個月
+                        ▶</button>
                 </div>
 
                 <div class="monthly-progress">
                     <div class="progress-header"
                         style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
                         <h3 data-i18n="monthlyProgress">本月進度</h3>
-                        <button class="btn-text-small" onclick="completeMonth()" data-i18n="monthComplete">本月完成</button>
+                        <button id="month-complete-btn" class="btn-text-small" onclick="completeMonth()"
+                            data-i18n="monthComplete">本月完成</button>
                     </div>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="monthly-bar" style="width: 0%;"></div>
@@ -79,7 +93,11 @@
                 </div>
 
                 <div class="annual-progress">
-                    <h3 data-i18n="yearlyProgress">年度進度</h3>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <h3 data-i18n="yearlyProgress" style="margin: 0;">年度進度</h3>
+                        <a href="summary.html" id="summary-btn" class="btn-blue" data-i18n="viewSummary">回顧動畫</a>
+                    </div>
                     <div class="progress-bar-container">
                         <div class="progress-bar" style="width: 0%;"></div>
                     </div>
@@ -87,30 +105,277 @@
                 </div>
             </div>
 
-            <footer class="app-footer">
-                <details>
-                    <summary data-i18n="toolTitle">工具</summary>
-                    <div class="data-controls" style="flex-direction: column; align-items: center; padding: 10px;">
-                        <div
-                            style="display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;">
-                            <button class="btn-text" onclick="exportData()" data-i18n="exportBtn">匯出備份</button>
-                            <button class="btn-text" onclick="importData()" data-i18n="importBtn">匯入備份</button>
-                            <a href="javascript:void(0)" onclick="createShortcut()" class="btn-text-small"
-                                data-i18n="shortcutBtn">匯出捷徑於桌面</a>
-                            <a href="guide.html" class="btn-text" data-i18n="guideBtn">使用說明書</a>
+            <div class="sidebar-footer">
+                <button class="btn-tools-trigger" onclick="toggleTools()">
+                    <span class="icon">⚙️</span>
+                    <span data-i18n="toolTitle">工具設定</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Bottom Sheet Tools -->
+        <div id="tools-overlay" class="overlay hidden" onclick="toggleTools()"></div>
+        <div id="tools-sheet" class="bottom-sheet hidden">
+            <div class="sheet-header">
+                <div class="header-line"></div>
+                <h2 data-i18n="toolTitle">工具設定</h2>
+                <button class="btn-close-sheet" onclick="toggleTools()">✕</button>
+            </div>
+            <div class="sheet-content">
+                <!-- 1. Appearance Selection -->
+                <button class="tool-item" type="button" onclick="showAppearanceSettings()">
+                    <span class="tool-icon">🎨</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="appearanceBtn">文字調整</div>
+                        <div class="tool-desc" data-i18n="appearanceDesc">調整深色模式、文字預設大小、中英語系</div>
+                    </div>
+                </button>
+                <!-- 2. User Guide -->
+                <a href="guide.html" class="tool-item">
+                    <span class="tool-icon">❓</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="guideBtn">使用說明書</div>
+                        <div class="tool-desc" data-i18n="guideDesc">了解如何使用本工具</div>
+                    </div>
+                </a>
+                <!-- 3. Complete All (conditional) -->
+                <button class="tool-item hidden" id="tool-complete-all" type="button" onclick="markAllPastDone()">
+                    <span class="tool-icon">⚡</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="completeAllBtn">完成全部進度</div>
+                        <div class="tool-desc" data-i18n="completeAllDesc">完成今天之前的所有進度</div>
+                    </div>
+                </button>
+                <!-- 4. Install App (conditional) -->
+                <button class="tool-item" id="tool-install-app" type="button" onclick="createShortcut()">
+                    <span class="tool-icon">📱</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="shortcutBtn">建立桌面捷徑</div>
+                        <div class="tool-desc" data-i18n="shortcutDesc">建立桌面捷徑永久入口</div>
+                    </div>
+                </button>
+                <!-- 5. Export Archive -->
+                <button class="tool-item" type="button" onclick="exportData()">
+                    <span class="tool-icon">📤</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="exportBtn">匯出備份</div>
+                        <div class="tool-desc" data-i18n="exportDesc">將讀經記錄存檔給其他裝置</div>
+                    </div>
+                </button>
+                <!-- 6. Import Archive -->
+                <button class="tool-item" type="button" onclick="importData()">
+                    <span class="tool-icon">📥</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="importBtn">匯入備份</div>
+                        <div class="tool-desc" data-i18n="importDesc">載入讀經記錄存檔</div>
+                    </div>
+                </button>
+                <!-- 7. Force Update -->
+                <button class="tool-item" type="button" onclick="forceUpdateApp()">
+                    <span class="tool-icon">🔄</span>
+                    <div class="tool-text">
+                        <div class="tool-name" data-i18n="updateBtn">手動更新</div>
+                        <div class="tool-desc" data-i18n="updateDesc">連線更新至最新版本資料</div>
+                    </div>
+                </button>
+            </div>
+            <div class="sheet-footer" style="padding: 10px 20px; text-align: center; border-top: 1px solid #f0f0f0;">
+                <p id="app-version" style="font-size: 13px; color: #777; margin: 0; cursor: pointer; font-weight: 500;"
+                    onclick="clearAppCache()">2026 GBC Bible Reading v.1.1.25 (點此重置快取)</p>
+            </div>
+        </div>
+
+        <!-- Appearance Settings Modal -->
+        <div id="appearance-overlay" class="modal-overlay hidden" onclick="closeAppearanceSettings()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <h2 data-i18n="appearanceTitle">介面外觀</h2>
+                    <button class="btn-close-modal" onclick="closeAppearanceSettings()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Reading Mode -->
+                    <div class="setting-item">
+                        <label data-i18n="themeLabel">閱讀模式</label>
+                        <div class="toggle-group">
+                            <span data-i18n="themeWhite">白色</span>
+                            <label class="switch">
+                                <input type="checkbox" id="theme-toggle" onchange="previewTheme()">
+                                <span class="slider round"></span>
+                            </label>
+                            <span data-i18n="themeDark">深色</span>
                         </div>
                     </div>
-                    <p style="font-size: 12px; color: #999; margin-top: 5px;" data-i18n="appNote">2026 GBC Bible</p>
-                </details>
-            </footer>
-        </aside>
+                    <!-- Font Size -->
+                    <div class="setting-item vertical">
+                        <label data-i18n="fontSizeLabel">文字大小</label>
+                        <div class="font-size-controls">
+                            <button onclick="changeFontSizeLevel(-1)">－</button>
+                            <span id="font-size-preview">Aa</span>
+                            <button onclick="changeFontSizeLevel(1)">＋</button>
+                        </div>
+                    </div>
+                    <!-- Default Language -->
+                    <div class="setting-item">
+                        <label data-i18n="langLabel">預設語系</label>
+                        <div class="toggle-group">
+                            <span>中文</span>
+                            <label class="switch">
+                                <input type="checkbox" id="lang-toggle-setting" onchange="previewLang()">
+                                <span class="slider round"></span>
+                            </label>
+                            <span>English</span>
+                        </div>
+                    </div>
+                    <!-- Force System Voice -->
+                    <div class="setting-item" style="border-top: 1px solid #f0f0f0; margin-top: 15px; padding-top: 15px;">
+                        <div style="flex: 1;">
+                            <label data-i18n="forceSystemVoiceLabel" style="display: block; font-weight: bold;">省電/穩定模式</label>
+                            <span data-i18n="forceSystemVoiceDesc" style="font-size: 0.8rem; color: #777;">使用系統內建語音，降低手機記憶體消耗</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="force-system-voice-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-reset" onclick="resetAppearance()" data-i18n="btnReset">恢復預設</button>
+                    <button class="btn-save" onclick="saveAppearance()" data-i18n="btnSave">儲存</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function clearAppCache() {
+                console.log('[USER-ACTION] Clear cache requested.');
+                if (confirm('確定要清除快取的語音包並重新下載嗎？')) {
+                    caches.keys().then(names => {
+                        for (let name of names) {
+                            console.log('[SW] Deleting cache:', name);
+                            caches.delete(name);
+                        }
+                        // Reset AI voice failure flag to allow re-trying AI voice
+                        localStorage.removeItem('bible_tts_skip_ai');
+                        console.log('[SW] Cache cleared. Force reloading...');
+                        location.reload(true);
+                    });
+                }
+            }
+        </script>
+
+        <!-- Daily Install Prompt Banner -->
+        <div id="install-prompt-banner" class="install-banner hidden">
+            <div class="banner-content">
+                <span class="banner-icon">📱</span>
+                <div class="banner-text">
+                    <strong>安裝到手機桌面</strong>
+                    <span>隨時開啟，閱讀更流暢</span>
+                </div>
+            </div>
+            <div class="banner-actions">
+                <button class="btn-banner-close" onclick="closeInstallPrompt(true)">今天不再顯示</button>
+                <button class="btn-banner-action" onclick="createShortcut(); closeInstallPrompt(false)">立即安裝</button>
+            </div>
+        </div>
+
+        <!-- Onboarding / Tutorial Modal -->
+        <div id="guide-modal" class="guide-overlay hidden">
+            <div class="guide-box">
+                <!-- Page 1: Welcome -->
+                <div class="guide-page" id="guide-page-1">
+                    <div class="guide-header">
+                        <span class="guide-icon-top">✨</span>
+                        <h2 data-i18n="guideWelcomeTitle">歡迎加入</h2>
+                    </div>
+                    <div class="guide-body">
+                        <p class="welcome-text" data-i18n="welcomeText">歡迎您加入懷恩堂 2026年讀經計劃</p>
+                        <div class="welcome-visual">📖</div>
+                    </div>
+                    <div class="guide-footer">
+                        <button class="btn-guide-next full-width" onclick="nextGuidePage(2)"
+                            data-i18n="navNextGuide">繼續</button>
+                    </div>
+                </div>
+
+                <!-- Page 2: UI Tutorial -->
+                <div class="guide-page hidden" id="guide-page-2">
+                    <div class="guide-header">
+                        <h2 data-i18n="guideUsageTitle">使用方式</h2>
+                    </div>
+                    <div class="guide-body tutorial-items">
+                        <div class="t-item">
+                            <span class="t-icon">📖</span>
+                            <div class="t-text">
+                                <strong data-i18n="tutorialStartTitle">開始閱讀</strong>
+                                <span data-i18n="tutorialStartDesc">中文和合本、中英切換、字級放大、深色模式</span>
+                            </div>
+                        </div>
+                        <div class="t-item">
+                            <span class="t-icon" style="color: #4caf50;">✅</span>
+                            <div class="t-text">
+                                <strong data-i18n="tutorialCatchTitle">補回進度</strong>
+                                <span data-i18n="tutorialCatchDesc">跳往未讀進度、快速完成進度</span>
+                            </div>
+                        </div>
+                        <div class="t-item">
+                            <span class="t-icon">🎙️</span>
+                            <div class="t-text">
+                                <strong data-i18n="tutorialAudioTitle">語音讀經</strong>
+                                <span data-i18n="tutorialAudioDesc">AI語音、點選經節播放</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="guide-footer">
+                        <button class="btn-guide-back" onclick="nextGuidePage(1)" data-i18n="navBackGuide">返回</button>
+                        <button class="btn-guide-next" onclick="nextGuidePage(3)" data-i18n="navNextGuide">繼續</button>
+                    </div>
+                </div>
+
+                <!-- Page 3: PWA Add -->
+                <div class="guide-page hidden" id="guide-page-3">
+                    <div class="guide-header">
+                        <h2 data-i18n="guidePWATitle">加入桌面捷徑</h2>
+                    </div>
+                    <div class="guide-body">
+                        <div class="pwa-visual">📱</div>
+                        <p class="pwa-text" data-i18n="pwaText">將讀經計畫加入桌面捷徑享受如原生 App 的流暢體驗</p>
+                    </div>
+                    <div class="guide-footer">
+                        <button class="btn-guide-back" onclick="nextGuidePage(2)" data-i18n="navBackGuide">返回</button>
+                        <button class="btn-guide-next" onclick="nextGuidePage(4)" data-i18n="navNextGuide">繼續</button>
+                    </div>
+                </div>
+
+                <!-- Page 4: Q&A Hint -->
+                <div class="guide-page hidden" id="guide-page-4">
+                    <div class="guide-header">
+                        <h2 data-i18n="guideQATitle">準備好了嗎？</h2>
+                    </div>
+                    <div class="guide-body">
+                        <div class="qa-hint-box">
+                            <span class="qa-icon">❓</span>
+                            <p data-i18n="qaText">若有任何疑問，歡迎點擊下方的 工具 > 使用說明書</p>
+                        </div>
+                    </div>
+                    <div class="guide-footer">
+                        <button class="btn-guide-back" onclick="nextGuidePage(3)" data-i18n="navBackGuide">返回</button>
+                        <button class="btn-guide-next" onclick="finishGuide()" data-i18n="guideFinish">開始讀經</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Right Panel: Scripture Reader -->
         <main class="main-content">
             <header class="reader-header">
-                <button class="btn-text mobile-only" onclick="switchView('dashboard')">←</button>
-                <div class="chapter-title" data-i18n="readerTitleDefault">章節標題</div>
+                <div class="header-back-area" onclick="switchView('dashboard')">
+                    <button class="btn-text mobile-only">←</button>
+                    <div class="chapter-title" data-i18n="readerTitleDefault">返回</div>
+                </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn-text" id="btn-audio-reading" onclick="toggleAudioReading()"
+                        style="font-size: 0.9rem; background: #f0f0f0; border-radius: 20px; padding: 4px 12px;"
+                        data-i18n="audioPlay">🎙️ 語音讀經</button>
                     <button class="btn-text" onclick="toggleLanguage()" id="lang-toggle-reader"
                         style="font-size: 0.9rem;">English</button>
                     <button class="btn-icon" onclick="toggleFontSize()">Aa</button>
