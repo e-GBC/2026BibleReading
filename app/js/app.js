@@ -1044,7 +1044,7 @@ window.diagnoseStorage = () => {
         if (localStorage.getItem('__gbc_test__') !== '1') lsStatus = '讀取異常';
         localStorage.removeItem('__gbc_test__');
     } catch (e) {
-        lsStatus = '遭鎖定或空間已滿 (' + e.name + ')';
+        lsStatus = '遭系統鎖定唯讀或空間滿載 (' + e.name + ')';
     }
 
     const completed = Object.keys(appState.chapterProgress || {}).length;
@@ -1054,10 +1054,19 @@ window.diagnoseStorage = () => {
     report += `🗄️ IndexedDB 持久庫：${window.indexedDB ? '✅ 支援並啟用' : '❌ 不支援'}\n\n`;
 
     if (lsStatus !== '正常') {
-        report += `⚠️ 檢測到手機儲存曾滿載，導致瀏覽器限制存檔。\n解法：請到 iPhone「設定」>「Safari」>「進階」>「網站資料」，滑動刪除「github.io」，即可解除鎖定！`;
+        report += `⚠️ 檢測到手機先前儲存容量滿載，導致瀏覽器將儲存區鎖定為唯讀狀態，無法寫入新進度。\n\n`;
     } else {
-        report += `狀態正常！現在點選章節皆會自動存檔保護。`;
+        report += `✅ 目前系統運作正常，點選章節皆會自動存檔保護！\n\n`;
     }
+
+    report += `----------------------------\n`;
+    report += `🔧【手機手動修復指南】\n`;
+    report += `若發生打勾無法存檔或遭鎖定：\n\n`;
+    report += `📱 iPhone (Safari)：\n`;
+    report += `請打開手機「設定」>「Safari」>「進階」>「網站資料」，找到 github.io 往左滑點「刪除」，重新點開 APP 即可徹底解除手機系統鎖定！\n\n`;
+    report += `🤖 Android (Chrome)：\n`;
+    report += `請於網址列左側點「設定/鎖頭圖示」>「網站設定」>「清除資料並重設」，重新開啟即可恢復！`;
+
     alert(report);
 };
 
