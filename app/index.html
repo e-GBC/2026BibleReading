@@ -22,10 +22,19 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        refreshing = true;
+                        window.location.reload();
+                    }
+                });
+
                 navigator.serviceWorker.register('./service-worker.js')
                     .then(reg => {
-                        console.log('SW Registered');
-                    });
+                        reg.update().catch(() => {});
+                    })
+                    .catch(err => console.log('SW registration failed', err));
             });
         }
     </script>
