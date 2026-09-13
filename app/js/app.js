@@ -257,6 +257,7 @@ const IDB_STORE = 'reading_progress';
 function openProgressDB() {
     return new Promise((resolve) => {
         if (!window.indexedDB) return resolve(null);
+        const timer = setTimeout(() => resolve(null), 1500);
         try {
             const req = indexedDB.open(IDB_NAME, IDB_VERSION);
             req.onupgradeneeded = (e) => {
@@ -265,9 +266,20 @@ function openProgressDB() {
                     db.createObjectStore(IDB_STORE);
                 }
             };
-            req.onsuccess = (e) => resolve(e.target.result);
-            req.onerror = () => resolve(null);
+            req.onsuccess = (e) => {
+                clearTimeout(timer);
+                resolve(e.target.result);
+            };
+            req.onerror = () => {
+                clearTimeout(timer);
+                resolve(null);
+            };
+            req.onblocked = () => {
+                clearTimeout(timer);
+                resolve(null);
+            };
         } catch (e) {
+            clearTimeout(timer);
             resolve(null);
         }
     });
@@ -353,30 +365,36 @@ function saveProgress() {
  * [New Analytics] Check if user has reached the latest reading goal (up to today)
  */
 function checkGoalReached() {
-    const todayStr = getDateKey(getTodayGMT8());
-    const pastAndTodayPlans = appState.readingPlan.filter(p => p.date <= todayStr);
-    if (pastAndTodayPlans.length === 0) return;
+    try {
+        const todayStr = getDateKey(getTodayGMT8());
+        const pastAndTodayPlans = appState.readingPlan.filter(p => p.date <= todayStr);
+        if (pastAndTodayPlans.length === 0) return;
 
-    let allFinished = true;
-    for (const p of pastAndTodayPlans) {
-        if (Array.isArray(p.chapters)) {
-            for (const ch of p.chapters) {
-                const key = `${BOOK_MAP[p.book] || p.book}_${ch}`;
-                if (!appState.chapterProgress[key]) {
-                    allFinished = false;
-                    break;
+        let allFinished = true;
+        for (const p of pastAndTodayPlans) {
+            if (Array.isArray(p.chapters)) {
+                for (const ch of p.chapters) {
+                    const key = `${BOOK_MAP[p.book] || p.book}_${ch}`;
+                    if (!appState.chapterProgress[key]) {
+                        allFinished = false;
+                        break;
+                    }
                 }
             }
+            if (!allFinished) break;
         }
-        if (!allFinished) break;
-    }
 
-    if (allFinished) {
-        const lastGoalReachedDate = localStorage.getItem('last_goal_reached_date');
-        if (lastGoalReachedDate !== todayStr) {
-            sendGaEvent('goal_reached', { 'goal_date': todayStr });
-            localStorage.setItem('last_goal_reached_date', todayStr);
+        if (allFinished) {
+            const lastGoalReachedDate = safeGetLocalStorage('last_goal_reached_date', null);
+            if (lastGoalReachedDate !== todayStr) {
+                sendGaEvent('goal_reached', { 'goal_date': todayStr });
+                try {
+                    localStorage.setItem('last_goal_reached_date', todayStr);
+                } catch (e) {}
+            }
         }
+    } catch (err) {
+        console.warn('checkGoalReached non-fatal error:', err);
     }
 }
 
@@ -977,7 +995,7 @@ window.completeMonth = () => {
 };
 
 // --- DATA TOOLS ---
-window.exportData = () => {
+window.exportData = async () => {
     const d = new Date();
     const fileName = `GBC2026_Progress_${d.getFullYear().toString().slice(-2)}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}.json`;
     const exportObj = {
@@ -988,11 +1006,59 @@ window.exportData = () => {
             lang: appState.currentLang
         }
     };
-    const blob = new Blob([JSON.stringify(exportObj)], { type: 'application/json' });
+    const jsonStr = JSON.stringify(exportObj, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+
+    // 1. Mobile Web Share API (native iOS / Android file share sheet)
+    if (navigator.canShare) {
+        try {
+            const file = new File([blob], fileName, { type: 'application/json' });
+            if (navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: '懷恩堂讀經進度存檔',
+                    text: '2026 懷恩堂讀經進度備份檔案'
+                });
+                showToast("存檔已送出！");
+                return;
+            }
+        } catch (e) {
+            if (e.name === 'AbortError') return;
+        }
+    }
+
+    // 2. Desktop Fallback
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = fileName;
+    document.body.appendChild(link);
     link.click();
+    setTimeout(() => link.remove(), 1000);
+    showToast("存檔備份已下載！");
+};
+
+window.diagnoseStorage = () => {
+    let lsStatus = '正常';
+    try {
+        localStorage.setItem('__gbc_test__', '1');
+        if (localStorage.getItem('__gbc_test__') !== '1') lsStatus = '讀取異常';
+        localStorage.removeItem('__gbc_test__');
+    } catch (e) {
+        lsStatus = '遭鎖定或空間已滿 (' + e.name + ')';
+    }
+
+    const completed = Object.keys(appState.chapterProgress || {}).length;
+    let report = `【讀經存檔狀態診斷】\n\n`;
+    report += `📱 目前打勾章數：${completed} 章\n`;
+    report += `💾 LocalStorage 快取：${lsStatus === '正常' ? '✅ 正常可讀寫' : '❌ ' + lsStatus}\n`;
+    report += `🗄️ IndexedDB 持久庫：${window.indexedDB ? '✅ 支援並啟用' : '❌ 不支援'}\n\n`;
+
+    if (lsStatus !== '正常') {
+        report += `⚠️ 檢測到手機儲存曾滿載，導致瀏覽器限制存檔。\n解法：請到 iPhone「設定」>「Safari」>「進階」>「網站資料」，滑動刪除「github.io」，即可解除鎖定！`;
+    } else {
+        report += `狀態正常！現在點選章節皆會自動存檔保護。`;
+    }
+    alert(report);
 };
 
 window.importData = () => {

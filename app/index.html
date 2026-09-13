@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 讀經計畫 | 懷恩堂數位事工</title>
     <meta name="description" content="台北懷恩堂 2026 年度聖經讀經進度追蹤與資源工具">
-    <link rel="stylesheet" href="css/style.css?v=1.1.26">
-    <link id="theme-link" rel="stylesheet" href="css/theme-light.css?v=1.1.26">
+    <link rel="stylesheet" href="css/style.css?v=1.1.27">
+    <link id="theme-link" rel="stylesheet" href="css/theme-light.css?v=1.1.27">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2196F3">
     <link rel="icon" type="image/png" href="icons/icon-192x192.png">
@@ -15,9 +15,9 @@
 
     <script src="../data/bible.js"></script>
     <script src="../data/bible_en.js"></script>
-    <script src="js/i18n.js?v=1.1.26"></script>
-    <script src="js/app.js?v=1.1.26" defer></script>
-    <script src="js/pwa-handler.js?v=1.1.26" defer></script>
+    <script src="js/i18n.js?v=1.1.27"></script>
+    <script src="js/app.js?v=1.1.27" defer></script>
+    <script src="js/pwa-handler.js?v=1.1.27" defer></script>
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -190,7 +190,13 @@
             </div>
             <div class="sheet-footer" style="padding: 10px 20px; text-align: center; border-top: 1px solid #f0f0f0;">
                 <p id="app-version" style="font-size: 13px; color: #777; margin: 0; cursor: pointer; font-weight: 500;"
-                    onclick="forceUpdateApp()">2026 GBC Bible Reading v1.1.26 (點此重置快取)</p>
+                    onclick="forceUpdateApp()">2026 GBC Bible Reading v1.1.27 (點此重置快取)</p>
+                <div style="margin-top: 8px;">
+                    <button type="button" class="btn-text-small" onclick="diagnoseStorage()"
+                        style="color: #2196F3; font-size: 13px; text-decoration: underline; background: none; border: none; cursor: pointer;">
+                        🔍 點此檢測手機存檔功能
+                    </button>
+                </div>
             </div>
         </div>
 
