@@ -1076,31 +1076,34 @@ window.openTools = () => {
     }
 };
 
-window.forceUpdateApp = () => {
-    const msg = appState.currentLang === 'en' ? "Checking for updates..." : "正在檢查更新並清除快取...";
-    showToast(msg);
+window.forceUpdateApp = async () => {
+    const isEn = appState.currentLang === 'en';
+    showToast(isEn ? "Updating to v1.1.26..." : "正在為您更新至 v1.1.26 並清除快取...");
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(registrations => {
+        try {
+            const registrations = await navigator.serviceWorker.getRegistrations();
             for (let registration of registrations) {
-                registration.update();
+                await registration.unregister();
             }
-            if ('caches' in window) {
-                caches.keys().then(names => {
-                    for (let name of names) caches.delete(name);
-                });
-            }
-            // Delay reload to let user see the message
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 2000);
-        });
-    } else {
-        setTimeout(() => {
-            window.location.reload(true);
-        }, 1000);
+        } catch (e) {}
     }
+    if ('caches' in window) {
+        try {
+            const names = await caches.keys();
+            for (let name of names) {
+                await caches.delete(name);
+            }
+        } catch (e) {}
+    }
+    setTimeout(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('reload', Date.now().toString());
+        window.location.replace(url.toString());
+    }, 1000);
 };
+
+window.clearAppCache = window.forceUpdateApp;
 
 function showToast(message) {
     let toast = document.getElementById('app-toast');
