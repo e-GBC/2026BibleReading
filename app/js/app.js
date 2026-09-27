@@ -120,16 +120,16 @@ window.closeInstallPrompt = (todayOnly) => {
 
 // --- ONBOARDING GUIDE ---
 function checkFirstTime() {
-    if (window.suppressGuides) return false; // Priority 1 blockage
+    if (window.suppressGuides) return false;
 
+    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
     const urlParams = new URLSearchParams(window.location.search);
     const forceShow = urlParams.get('showGuide') === 'true';
-    const isFinished = localStorage.getItem('bible_reading_guide_finished');
-    const totalChapters = Object.keys(appState.chapterProgress).length;
+    const isFinished = safeGetLocalStorage('bible_reading_guide_finished', null);
+    const totalChapters = Object.keys(appState.chapterProgress || {}).length;
 
-    // Priority 2: Auto show if forced OR (never finished AND progress is 0)
-    // We treat totalChapters === 0 as a "Fresh User" indicator
-    if (forceShow || (!isFinished && totalChapters === 0)) {
+    // Do NOT show onboarding guide automatically if already installed on home screen
+    if (forceShow || (!isFinished && totalChapters === 0 && !isStandalone)) {
         showGuide();
         return true;
     }
@@ -149,7 +149,9 @@ window.nextGuidePage = (pageNum) => {
 };
 
 window.finishGuide = () => {
-    localStorage.setItem('bible_reading_guide_finished', 'true');
+    try {
+        localStorage.setItem('bible_reading_guide_finished', 'true');
+    } catch (e) {}
     const modal = document.getElementById('guide-modal');
     if (modal) modal.classList.add('hidden');
 };
