@@ -16,10 +16,10 @@
             "purpose": "any maskable"
         }
     ],
-    "start_url": "./index.html",
+    "start_url": "/apps/2026BibleReading/app/index.html",
     "background_color": "#FFFFFF",
     "display": "standalone",
-    "scope": "./",
+    "scope": "/apps/2026BibleReading/",
     "theme_color": "#2196F3",
     "orientation": "portrait",
     "categories": [

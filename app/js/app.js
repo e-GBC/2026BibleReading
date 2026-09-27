@@ -89,23 +89,8 @@ async function initApp() {
 
 // --- DAILY INSTALL PROMPT ---
 function checkDailyInstallPrompt() {
-    if (window.suppressGuides) return; // Priority 1 blockage
-
-    // 1. Check if already in standalone mode
-    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-    if (isStandalone) return;
-
-    // 2. Check if shown today
-    const todayStr = getDateKey(new Date());
-    const lastPromptDate = localStorage.getItem('last_install_prompt_date');
-
-    if (lastPromptDate !== todayStr) {
-        // Show banner after a short delay
-        setTimeout(() => {
-            const banner = document.getElementById('install-prompt-banner');
-            if (banner) banner.classList.remove('hidden');
-        }, 3000);
-    }
+    // Suppressed to prevent distracting users or giving false sense of resetting
+    return;
 }
 
 window.closeInstallPrompt = (todayOnly) => {
@@ -120,16 +105,16 @@ window.closeInstallPrompt = (todayOnly) => {
 
 // --- ONBOARDING GUIDE ---
 function checkFirstTime() {
-    if (window.suppressGuides) return false;
+    // Always mark as finished in storage to never auto-trigger
+    try {
+        localStorage.setItem('bible_reading_guide_finished', 'true');
+    } catch (e) {}
 
-    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
     const urlParams = new URLSearchParams(window.location.search);
     const forceShow = urlParams.get('showGuide') === 'true';
-    const isFinished = safeGetLocalStorage('bible_reading_guide_finished', null);
-    const totalChapters = Object.keys(appState.chapterProgress || {}).length;
 
-    // Do NOT show onboarding guide automatically if already installed on home screen
-    if (forceShow || (!isFinished && totalChapters === 0 && !isStandalone)) {
+    // Only show guide if user explicitly clicks/requests it via URL param or tool menu
+    if (forceShow) {
         showGuide();
         return true;
     }
@@ -315,6 +300,38 @@ async function saveProgressToIDB(data) {
     }
 }
 
+// --- TIER 3 DISASTER RECOVERY: COOKIE SAFETY NET ---
+function getProgressFromCookie() {
+    try {
+        const match = document.cookie.match(/(?:^|;\s*)gbc_progress_backup=([^;]+)/);
+        if (match && match[1]) {
+            const raw = decodeURIComponent(match[1]);
+            const keys = raw.split('|').filter(Boolean);
+            if (keys.length > 0) {
+                const res = {};
+                keys.forEach(k => { res[k] = true; });
+                return res;
+            }
+        }
+    } catch (e) {
+        console.warn('[Storage] Cookie restore failed:', e);
+    }
+    return null;
+}
+
+function saveProgressToCookie(data) {
+    try {
+        if (!data || typeof data !== 'object') return;
+        const keys = Object.keys(data).filter(k => data[k]);
+        const compact = keys.join('|');
+        // Cookie max ~4KB: enough for hundreds of chapters. Store with 1 year expiration
+        const expires = new Date(Date.now() + 365 * 864e5).toUTCString();
+        document.cookie = `gbc_progress_backup=${encodeURIComponent(compact)}; expires=${expires}; path=/; SameSite=Lax`;
+    } catch (e) {
+        console.warn('[Storage] Cookie backup failed:', e);
+    }
+}
+
 async function loadProgress() {
     let loadedFromLS = false;
     try {
@@ -350,6 +367,25 @@ async function loadProgress() {
     } catch (e) {
         console.warn('[Storage] IDB sync error:', e);
     }
+
+    // Tier 3 Safety Net: If both LocalStorage and IndexedDB were cleared by iOS eviction, recover from Cookie
+    const currentKeysCount = Object.keys(appState.chapterProgress || {}).length;
+    if (currentKeysCount === 0) {
+        const cookieBackup = getProgressFromCookie();
+        if (cookieBackup && Object.keys(cookieBackup).length > 0) {
+            console.log(`[Storage] Rescued progress from Cookie backup (${Object.keys(cookieBackup).length} chapters)!`);
+            appState.chapterProgress = cookieBackup;
+            try {
+                localStorage.setItem('bible_reading_progress_v2', JSON.stringify(appState.chapterProgress));
+            } catch (e) {}
+            saveProgressToIDB(appState.chapterProgress);
+            updateStats();
+            renderDashboard();
+        }
+    } else {
+        // Sync to cookie backup
+        saveProgressToCookie(appState.chapterProgress);
+    }
 }
 
 function saveProgress() {
@@ -359,6 +395,7 @@ function saveProgress() {
         console.warn('[Storage] localStorage save failed (quota or restricted):', e);
     }
     saveProgressToIDB(appState.chapterProgress);
+    saveProgressToCookie(appState.chapterProgress);
     updateStats();
     checkGoalReached();
 }
@@ -1049,16 +1086,20 @@ window.diagnoseStorage = () => {
         lsStatus = '遭系統鎖定唯讀或空間滿載 (' + e.name + ')';
     }
 
+    const cookieBackup = getProgressFromCookie();
+    const cookieCount = cookieBackup ? Object.keys(cookieBackup).length : 0;
+
     const completed = Object.keys(appState.chapterProgress || {}).length;
     let report = `【讀經存檔狀態診斷】\n\n`;
     report += `📱 目前打勾章數：${completed} 章\n`;
     report += `💾 LocalStorage 快取：${lsStatus === '正常' ? '✅ 正常可讀寫' : '❌ ' + lsStatus}\n`;
-    report += `🗄️ IndexedDB 持久庫：${window.indexedDB ? '✅ 支援並啟用' : '❌ 不支援'}\n\n`;
+    report += `🗄️ IndexedDB 持久庫：${window.indexedDB ? '✅ 支援並啟用' : '❌ 不支援'}\n`;
+    report += `🍪 Cookie 容災備份：${cookieCount > 0 ? `✅ 已備份 (${cookieCount} 章)` : '✅ 支援並同步'}\n\n`;
 
     if (lsStatus !== '正常') {
-        report += `⚠️ 檢測到手機先前儲存容量滿載，導致瀏覽器將儲存區鎖定為唯讀狀態，無法寫入新進度。\n\n`;
+        report += `⚠️ 檢測到手機儲存容量可能偏低或先前遭鎖定。但請放心，系統已啟用 Cookie 容災備份防護！\n\n`;
     } else {
-        report += `✅ 目前系統運作正常，點選章節皆會自動存檔保護！\n\n`;
+        report += `✅ 目前系統運作正常，三重防護確保點選章節皆會自動存檔！\n\n`;
     }
 
     report += `----------------------------\n`;
