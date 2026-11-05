@@ -4606,10 +4606,13 @@
     "book": "帖撒羅尼迦前書",
     "chapters": [
       1,
-      2
+      2,
+      3,
+      4,
+      5
     ],
     "book_en": "1 Thessalonians",
-    "description_en": "1 Thessalonians Chapters 1-2"
+    "description_en": "1 Thessalonians Chapters 1-5"
   },
   {
     "date": "2026-11-27",
